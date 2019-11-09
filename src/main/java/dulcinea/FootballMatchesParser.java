@@ -10,11 +10,7 @@ import com.google.common.collect.Streams;
 
 public class FootballMatchesParser {
 
-    public FootballMatchesParser() {
-    }
-
-
-    public List<Match> parse(String json) throws Exception {
+    public static List<Match> parse(String json) throws Exception {
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode jsonNode = mapper.readTree(json);
         List<Match> matches = Streams.stream(jsonNode.get("matches").elements())
@@ -22,7 +18,7 @@ public class FootballMatchesParser {
         return matches;
     }
 
-    private Match extractMatchFromJsonNode(JsonNode match) {
+    private static Match extractMatchFromJsonNode(JsonNode match) {
         JsonNode result = match.get("score").get("fullTime");
         return new Match(
             match.get("homeTeam").get("name").textValue(),

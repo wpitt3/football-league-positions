@@ -4,18 +4,13 @@ import spock.lang.Specification
 
 class FootballMatchesParserTest extends Specification {
     
-    FootballMatchesParser footballParser
-    
-    def setup() {
-        footballParser = new FootballMatchesParser()
-    }
     
     void "Parse matches"() {
         given:
           String matchJson = getClass().getResource('/matches.json').readLines().join()
         
         when:
-          List<Match> matches = footballParser.parse(matchJson)
+          List<Match> matches = FootballMatchesParser.parse(matchJson)
         
         then:
           matches.size() == 380
