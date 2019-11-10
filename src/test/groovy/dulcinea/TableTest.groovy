@@ -8,12 +8,12 @@ class TableTest extends Specification {
     void "Don't include non played matches in table"() {
         given:
           List matches = [
-                  new Match("EFC", "WFC", null, null),
+              new Match("EFC", "WFC", null, null),
           ]
         
         when:
           Table table = new Table()
-          table.update(matches)
+          table.updateTable(matches)
         
         then:
           table.teams.size() == 0
@@ -22,13 +22,13 @@ class TableTest extends Specification {
     void "A win gets more points then a draw and loss"() {
         given:
           List matches = [
-                  new Match("LFC", "NCFC", 4, 1),
-                  new Match("CFC", "WWWFC", 2, 2),
+              new Match("LFC", "NCFC", 4, 1),
+              new Match("CFC", "WWWFC", 2, 2),
           ]
         
         when:
           Table table = new Table()
-          table.update(matches)
+          table.updateTable(matches)
         
         then:
           table.teams.size() == 4
@@ -46,14 +46,14 @@ class TableTest extends Specification {
     void "The table is ordered by points then gd the gf"() {
         given:
           List matches = [
-                  new Match("LFC", "NCFC", 4, 1),
-                  new Match("NUFC", "SFC", 0, 3),
-                  new Match("MUFC", "AFC", 2, 1),
+              new Match("LFC", "NCFC", 4, 1),
+              new Match("NUFC", "SFC", 0, 3),
+              new Match("MUFC", "AFC", 2, 1),
           ]
         
         when:
           Table table = new Table()
-          table.update(matches)
+          table.updateTable(matches)
     
         then:
           table.teams.size() == 6
@@ -71,6 +71,58 @@ class TableTest extends Specification {
           table.teams[2].getGoalsFor() == 2
     }
     
+    void "The table is created up until match 1 when there are 2 matches"() {
+        given:
+          List matches = [
+              new Match("LFC", "NCFC", 4, 1),
+              new Match("NUFC", "SFC", 0, 3),
+              new Match("SFC", "NCFC", 4, 1),
+              new Match("NUFC", "LFC", 2, 1),
+          ]
+        
+        when:
+          Table table = new Table()
+          table.updateTable(matches, 1)
+          
+        then:
+          table.teams.size() == 4
+          table.teams.every{team -> team.played == 1}
+    }
+    
+    void "The table is created up until match 2 when there are 2 matches"() {
+        given:
+          List matches = [
+              new Match("LFC", "NCFC", 4, 1),
+              new Match("NUFC", "SFC", 0, 3),
+              new Match("SFC", "NCFC", 4, 1),
+              new Match("NUFC", "LFC", 2, 1),
+          ]
+        
+        when:
+          Table table = new Table()
+          table.updateTable(matches, 2)
+        
+        then:
+          table.teams.size() == 4
+          table.teams.every{team -> team.played == 2}
+    }
+    
+    void "If there not enough matches to meet week specified throw exception"() {
+        given:
+          List matches = [
+              new Match("LFC", "NCFC", 4, 1),
+              new Match("NUFC", "SFC", 0, 3),
+              new Match("SFC", "NCFC", 4, 1),
+          ]
+        
+        when:
+          Table table = new Table()
+          table.updateTable(matches, 2)
+        
+        then:
+          thrown RuntimeException
+    }
+    
     void "table prints correctly"() {
         given:
           List matches = [
@@ -80,7 +132,7 @@ class TableTest extends Specification {
         
         when:
           Table table = new Table()
-          table.update(matches)
+          table.updateTable(matches)
           String result = table.printTable()
         
         then:
@@ -89,6 +141,5 @@ class TableTest extends Specification {
               "CFC        1   0   1   0   2   2   0   1\n" +
               "WWWFC      1   0   1   0   2   2   0   1\n" +
               "NCFC       1   0   0   1   1   4  -3   0\n"
-    
     }
 }
