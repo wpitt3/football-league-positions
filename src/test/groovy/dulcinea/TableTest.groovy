@@ -137,6 +137,7 @@ class TableTest extends Specification {
         
         then:
           result ==
+              "Team      P   W   D   L  GF  GA  GD   P\n" +
               "LFC        1   1   0   0   4   1   3   3\n" +
               "CFC        1   0   1   0   2   2   0   1\n" +
               "WWWFC      1   0   1   0   2   2   0   1\n" +

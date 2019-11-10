@@ -9,4 +9,8 @@ run
 
 
 ## To run
-`java -jar build/libs/football-league-positions-1.0-SNAPSHOT.jar`
+`java -jar build/libs/football-league-positions-1.0-SNAPSHOT.jar <fileWithMatches> <matchesPlayed> <matchesIntoFuture>`
+
+e.g
+
+`java -jar build/libs/football-league-positions-1.0-SNAPSHOT.jar src/test/resources/matches.json 10 1`

@@ -1,5 +1,6 @@
 package dulcinea;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,7 @@ import com.google.common.collect.Streams;
 
 public class FootballMatchesParser {
 
-    public static List<Match> parse(String json) throws Exception {
+    public static List<Match> parse(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode jsonNode = mapper.readTree(json);
         List<Match> matches = Streams.stream(jsonNode.get("matches").elements())

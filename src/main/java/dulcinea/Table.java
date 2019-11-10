@@ -47,24 +47,6 @@ public class Table {
         return teams.get(index);
     }
 
-    public String printTable() {
-        String table = "";
-        for (TeamStatus team : teams) {
-            table += StringUtils.rightPad(team.getName(), 8);
-            table += padNumber(team.getPlayed());
-            table += padNumber(team.getWon());
-            table += padNumber(team.getDrawn());
-            table += padNumber(team.getLost());
-            table += padNumber(team.getGoalsFor());
-            table += padNumber(team.getGoalsAgainst());
-            table += padNumber(team.getGoalDifference());
-            table += padNumber(team.getPoints());
-            table += "\n";
-        }
-
-        return table;
-    }
-
     private void addMatchesToTable(List<Match> matches) {
         for (Match match : matches) {
             getTeam(match.getHomeTeam()).addMatch(match.getHomeTeamScore(), match.getAwayTeamScore());
@@ -96,12 +78,29 @@ public class Table {
         ).collect(Collectors.toList());
     }
 
-    private String padNumber(int value) {
-        return StringUtils.leftPad(String.valueOf(value), 4);
-    }
-
     private Integer getTeamFrequency(String team, Map<String, Integer> teamFrequency) {
         return teamFrequency.get(team) != null ? teamFrequency.get(team)+1 : 1;
+    }
+
+    public String printTable() {
+        String table = "Team      P   W   D   L  GF  GA  GD   P\n";
+        for (TeamStatus team : teams) {
+            table += StringUtils.rightPad(team.getName(), 8);
+            table += padNumber(team.getPlayed());
+            table += padNumber(team.getWon());
+            table += padNumber(team.getDrawn());
+            table += padNumber(team.getLost());
+            table += padNumber(team.getGoalsFor());
+            table += padNumber(team.getGoalsAgainst());
+            table += padNumber(team.getGoalDifference());
+            table += padNumber(team.getPoints());
+            table += "\n";
+        }
+        return table;
+    }
+
+    private String padNumber(int value) {
+        return StringUtils.leftPad(String.valueOf(value), 4);
     }
 
 }
