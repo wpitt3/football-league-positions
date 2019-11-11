@@ -2,6 +2,7 @@ package dulcinea;
 
 public class TeamStatus {
     private String name;
+    private int position; // 1 indexed
     private int won;
     private int drawn;
     private int lost;
@@ -10,6 +11,7 @@ public class TeamStatus {
 
     public TeamStatus(String name) {
         this.name = name;
+        this.position = -1;
         this.won = 0;
         this.drawn = 0;
         this.lost = 0;
@@ -51,6 +53,14 @@ public class TeamStatus {
 
     public int getPoints() {
         return won*3+drawn;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void addMatch(int teamScore, int opponentScore) {

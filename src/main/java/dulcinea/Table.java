@@ -10,41 +10,29 @@ public class Table {
     private List<TeamStatus> teams;
 
     Table() {
-        teams = new ArrayList<TeamStatus>();
+        teams = new ArrayList<>();
     }
 
     /**
      * Construct table for all matches
      */
     public void updateTable(List<Match> matches) {
-        addMatchesToTable(filterMatchesByPlayed(matches));
+        addMatchesToTable(MatchFilterer.filterMatchesByPlayed(matches));
     }
 
     /**
      * Construct table for matches up to week x
      */
     public void updateTable(List<Match> matches, int noOfMatches) {
-        Map<String, Integer> teamFrequency = new HashMap<>();
-        List<Match> matchesUpToWeek = new ArrayList<>();
+        List<Match> matchesUpToWeek = MatchFilterer.findMatchesUntilWeekX(
+            MatchFilterer.filterMatchesByPlayed(matches), noOfMatches
+        );
 
-        for (Match match : filterMatchesByPlayed(matches)) {
-            Integer homeTeamCount = getTeamFrequency(match.getHomeTeam(), teamFrequency);
-            Integer awayTeamCount = getTeamFrequency(match.getAwayTeam(), teamFrequency);
-            if (homeTeamCount <= noOfMatches && awayTeamCount <= noOfMatches) {
-                matchesUpToWeek.add(match);
-                teamFrequency.put(match.getHomeTeam(), homeTeamCount);
-                teamFrequency.put(match.getAwayTeam(), awayTeamCount);
-            }
-        }
-
-        if (teamFrequency.keySet().stream().anyMatch(team -> teamFrequency.get(team) != noOfMatches )) {
-            throw new RuntimeException("Not enough matches to meet requested number");
-        }
         addMatchesToTable(matchesUpToWeek);
     }
 
-    public TeamStatus getTeam(int index) {
-        return teams.get(index);
+    public List<TeamStatus> getTeams() {
+        return teams;
     }
 
     private void addMatchesToTable(List<Match> matches) {
@@ -53,12 +41,6 @@ public class Table {
             getTeam(match.getAwayTeam()).addMatch(match.getAwayTeamScore(), match.getHomeTeamScore());
         }
         updateOrder();
-    }
-
-    private List<Match> filterMatchesByPlayed(List<Match> matches) {
-        return matches.stream()
-                .filter(match -> match.getHomeTeamScore() != null && match.getAwayTeamScore() != null)
-                .collect(Collectors.toList());
     }
 
     private TeamStatus getTeam(String name) {
@@ -76,11 +58,13 @@ public class Table {
                 .thenComparing(TeamStatus::getGoalsFor)
                 .reversed()
         ).collect(Collectors.toList());
+
+        int index = 1;
+        for(TeamStatus team: teams) {
+            team.setPosition(index++);
+        }
     }
 
-    private Integer getTeamFrequency(String team, Map<String, Integer> teamFrequency) {
-        return teamFrequency.get(team) != null ? teamFrequency.get(team)+1 : 1;
-    }
 
     public String printTable() {
         String table = "Team      P   W   D   L  GF  GA  GD   P\n";

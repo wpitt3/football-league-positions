@@ -89,40 +89,6 @@ class TableTest extends Specification {
           table.teams.every{team -> team.played == 1}
     }
     
-    void "The table is created up until match 2 when there are 2 matches"() {
-        given:
-          List matches = [
-              new Match("LFC", "NCFC", 4, 1),
-              new Match("NUFC", "SFC", 0, 3),
-              new Match("SFC", "NCFC", 4, 1),
-              new Match("NUFC", "LFC", 2, 1),
-          ]
-        
-        when:
-          Table table = new Table()
-          table.updateTable(matches, 2)
-        
-        then:
-          table.teams.size() == 4
-          table.teams.every{team -> team.played == 2}
-    }
-    
-    void "If there not enough matches to meet week specified throw exception"() {
-        given:
-          List matches = [
-              new Match("LFC", "NCFC", 4, 1),
-              new Match("NUFC", "SFC", 0, 3),
-              new Match("SFC", "NCFC", 4, 1),
-          ]
-        
-        when:
-          Table table = new Table()
-          table.updateTable(matches, 2)
-        
-        then:
-          thrown RuntimeException
-    }
-    
     void "table prints correctly"() {
         given:
           List matches = [

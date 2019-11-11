@@ -23,13 +23,14 @@ class LeaguePositionCalculator {
         Integer matchesPlayed = Integer.parseInt(args[1]);
         Integer matchesLookAhead = Integer.parseInt(args[2]);
 
-
-        List<Match> matches = FootballMatchesParser.parse(readFile(args[0]));
+        List<Match> allMatches = FootballMatchesParser.parse(readFile(args[0]));
 
         Table table = new Table();
-        table.updateTable(matches, matchesPlayed);
+        table.updateTable(allMatches, matchesPlayed);
 
         System.out.println(table.printTable());
+
+        LeaguePredicter.findPossibleLeaguePositions(table, allMatches, matchesPlayed, matchesLookAhead);
     }
 
     private static String readFile(String filename) throws IOException {
