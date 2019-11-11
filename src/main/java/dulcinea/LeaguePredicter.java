@@ -17,22 +17,38 @@ public class LeaguePredicter {
     public static List<LeaguePositionStats> findPossibleLeaguePositions(Table table, List<Match> matches, Integer matchesPlayed, Integer matchesLookAhead) {
         Integer maxPoints = pointsForAWin * matchesLookAhead;
         Map<String, ArrayList<String>> teamToOpponents = calculateTeamToOpponents(matches, matchesPlayed, matchesLookAhead);
-        System.out.println(teamToOpponents);
 
         return table.getTeams().stream().map( team -> {
-            List<String> upcomingFixtures = teamToOpponents.get(team.getName());
             LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getPosition());
+
             List<TeamStatus> catchableTeams = findCatchableTeams(table, team.getPosition(), team.getPoints() + maxPoints);
             if (catchableTeams.size() == 0) {
                 leaguePositionStats.setHighestPossible(team.getPosition());
+            } else {
+                List<TeamStatus> teamsPlayingEachOther = findTeamsPlayingEachOther(catchableTeams, teamToOpponents);
+                int teamsWhichCannotCatchMainTeam = teamsWhichAreNotCatchablebyMainTeam(team, teamsPlayingEachOther, teamToOpponents, matchesLookAhead);
+                int teamsWithinPointsAndGoalDifference = calcTeamsAheadWithinPointsAndGoalDiff(catchableTeams, maxPoints, team).size();
+
+                if (teamsWhichCannotCatchMainTeam != 0) {
+                    leaguePositionStats.setHighestPossible(team.getPosition() - (catchableTeams.size() - teamsWhichCannotCatchMainTeam));
+                    leaguePositionStats.setHighestImpossible(team.getPosition() - catchableTeams.size());
+                    if (teamsWithinPointsAndGoalDifference < catchableTeams.size() - teamsWhichCannotCatchMainTeam) {
+                        teamsWithinPointsAndGoalDifference = catchableTeams.size() - teamsWhichCannotCatchMainTeam;
+                    }
+                } else {
+                    leaguePositionStats.setHighestPossible(team.getPosition() - catchableTeams.size());
+                }
+                leaguePositionStats.setHighestWithoutLargeSwing(team.getPosition() - teamsWithinPointsAndGoalDifference);
             }
+
+
             List<TeamStatus> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getPosition(), team.getPoints() - maxPoints);
             if (teamsCatchingUp.size() == 0) {
                 leaguePositionStats.setLowestPossible(team.getPosition());
             } else {
                 List<TeamStatus> teamsPlayingEachOther = findTeamsPlayingEachOther(teamsCatchingUp, teamToOpponents);
                 int teamsWhichCannotCatchMainTeam = teamsWhichCannotCatchMainTeam(team, teamsPlayingEachOther, teamToOpponents, matchesLookAhead);
-                int teamsWithinPointsAndGoalDifference = calcTeamsWithinPointsAndGoalDiff(teamsCatchingUp, maxPoints, team).size();
+                int teamsWithinPointsAndGoalDifference = calcTeamsBehindWithinPointsAndGoalDiff(teamsCatchingUp, maxPoints, team).size();
 
                 if (teamsWhichCannotCatchMainTeam != 0) {
                     leaguePositionStats.setLowestPossible(team.getPosition() + teamsCatchingUp.size() - teamsWhichCannotCatchMainTeam);
@@ -55,9 +71,17 @@ public class LeaguePredicter {
         return teamsCatchingUp.stream().filter(teamStatus -> teamToOpponents.get(teamStatus.getName()).stream().anyMatch(teamName -> teamNames.contains(teamName))).collect(Collectors.toList());
     }
 
+    private static int teamsWhichAreNotCatchablebyMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsPlayingEachOther, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+        int targetPoints = mainTeam.getPoints() + 3 * matchesLookAhead;
+        if (matchesLookAhead == 1 && teamsPlayingEachOther.size() == 2 && teamsPlayingEachOther.stream().anyMatch(team -> team.getPoints() +1 > targetPoints)) {
+            return teamsPlayingEachOther.size() - 1;
+        }
+        return 0;
+    }
+
     private static int teamsWhichCannotCatchMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsPlayingEachOther, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints();
-        if (matchesLookAhead == 1 && teamsPlayingEachOther.size() == 2 && teamsPlayingEachOther.stream().allMatch(team -> team.getPoints() + 1 < targetPoints)) {
+        if (matchesLookAhead == 1 && teamsPlayingEachOther.size() == 2 && teamsPlayingEachOther.stream().anyMatch(team -> team.getPoints() + 1 < targetPoints)) {
             return teamsPlayingEachOther.size() - 1;
         }
         return 0;
@@ -75,7 +99,17 @@ public class LeaguePredicter {
                 .collect(Collectors.toList());
     }
 
-    private static List<TeamStatus> calcTeamsWithinPointsAndGoalDiff(List<TeamStatus> teamsCatchingUp, Integer maxPoints, TeamStatus team) {
+    private static List<TeamStatus> calcTeamsAheadWithinPointsAndGoalDiff(List<TeamStatus> teamsAhead, Integer maxPoints, TeamStatus team) {
+        return teamsAhead.stream()
+                .filter(aheadTeam ->
+                        aheadTeam.getPoints() < team.getPoints() + maxPoints
+                                || aheadTeam.getGoalDifference() < team.getGoalDifference() + 3
+                                || (aheadTeam.getGoalDifference() == team.getGoalDifference() + 3 && aheadTeam.getGoalsFor() <= team.getGoalsFor())
+                )
+                .collect(Collectors.toList());
+    }
+
+    private static List<TeamStatus> calcTeamsBehindWithinPointsAndGoalDiff(List<TeamStatus> teamsCatchingUp, Integer maxPoints, TeamStatus team) {
         return teamsCatchingUp.stream()
                 .filter(catchingTeam ->
                         catchingTeam.getPoints() + maxPoints > team.getPoints()
