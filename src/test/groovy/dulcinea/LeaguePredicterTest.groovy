@@ -66,7 +66,7 @@ class LeaguePredicterTest extends Specification {
           result[0].lowestImpossible == 4
     }
     
-    void "Lowest without large swing must take into account possible"() {
+    void "Lowest without large swing is only set is not equal to possible"() {
         given:
           Table table = new Table()
           table.updateTable(matches(), 2)
@@ -77,10 +77,8 @@ class LeaguePredicterTest extends Specification {
         then:
           result.size() == 6
           result[3].teamName == "SFC"
-          result[3].lowestWithoutLargeSwing == 5
           result[3].lowestPossible == 5
           result[3].lowestImpossible == 6
-          result[4].lowestWithoutLargeSwing == 6
           result[4].lowestPossible == 6
     }
     
@@ -95,7 +93,7 @@ class LeaguePredicterTest extends Specification {
         then:
           result.size() == 6
           result[1].teamName == "CFC"
-//          result[1].lowestWithoutLargeSwing == 4  need to fix this
+          result[1].lowestWithoutLargeSwing == 3
           result[1].lowestPossible == 5
     }
     
@@ -120,10 +118,15 @@ class LeaguePredicterTest extends Specification {
         given:
           Table table = new Table()
           table.updateTable(matches(), 2)
+          println table.printTable()
     
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
-    
+//
+          result.each{
+              println it
+          }
+        
         then:
           result.size() == 6
           result[2].teamName == "LFC"
@@ -136,6 +139,42 @@ class LeaguePredicterTest extends Specification {
           result[5].highestPossible == 4
     }
     
+    void "Teams behind by 3 points and 3 goals but with better goals scored are not counted as large swing"() {
+        given:
+          List<Match> matches = [
+              new Match("LFC", "BFC", 6, 4),
+              new Match("NUFC", "SFC", 2, 1),
+              new Match("LFC", "SFC"),
+              new Match("NUFC", "BFC"),
+          ]
+        
+          Table table = new Table()
+          table.updateTable(matches, 1)
+          println table.printTable()
+        
+        when:
+          List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches, 1, 1)
+  
+          result.each{
+              println it
+          }
+        
+        then:
+          result.size() == 4
+          result[0].teamName == "LFC"
+          result[0].lowestPossible == 4
+          result[1].teamName == "NUFC"
+          result[1].lowestPossible == 4
+          result[2].teamName == "SFC"
+          result[2].currentPosition == 3
+          result[2].highestWithoutLargeSwing == 2
+          result[2].highestPossible == 1
+          result[3].teamName == "BFC"
+          result[3].currentPosition == 4
+          result[3].highestWithoutLargeSwing == 2
+          result[3].highestPossible == 1
+    }
+    
     private List<Match> matches() {
         return [
             new Match("LFC", "BFC", 4, 1),
@@ -146,9 +185,9 @@ class LeaguePredicterTest extends Specification {
             new Match("CFC", "LFC", 2, 1),
             new Match("NUFC", "MCFC", 4, 1),
             
-            new Match("LFC", "SFC", 2, 2),
-            new Match("CFC", "NUFC", 1, 0),
-            new Match("MCFC", "BFC", 1, 0),
+            new Match("LFC", "SFC", null, null),
+            new Match("CFC", "NUFC", null, null),
+            new Match("MCFC", "BFC", null, null),
         ]
     }
 }

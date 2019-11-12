@@ -7,6 +7,11 @@ public class Match {
     private Integer homeTeamScore;
     private Integer awayTeamScore;
 
+    public Match(String homeTeam, String awayTeam) {
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+    }
+
     public Match(String homeTeam, String awayTeam, Integer homeTeamScore, Integer awayTeamScore) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
