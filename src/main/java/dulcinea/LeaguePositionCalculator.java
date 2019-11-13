@@ -6,7 +6,7 @@ import java.util.List;
 
 class LeaguePositionCalculator {
 
-    public static void main(String[] args) throws IOException  {
+    public static void main(String[] args) throws IOException {
         if (args.length < 1) {
             System.out.println("Missing filename");
             return;
@@ -30,7 +30,11 @@ class LeaguePositionCalculator {
 
         System.out.println(table.printTable());
 
-        LeaguePredicter.findPossibleLeaguePositions(table, allMatches, matchesPlayed, matchesLookAhead);
+        List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, allMatches, matchesPlayed, matchesLookAhead);
+
+        for (LeaguePositionStats stats : result) {
+            System.out.println(stats);
+        }
     }
 
     private static String readFile(String filename) throws IOException {

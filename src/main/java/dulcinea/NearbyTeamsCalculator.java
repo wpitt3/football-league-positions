@@ -15,9 +15,18 @@ public class NearbyTeamsCalculator {
 
         for (String teamName : teamToBeats.keySet()) {
             TeamToBeat teamToBeat = teamToBeats.get(teamName);
+            List<String> opponents = new ArrayList<>(teamToBeat.opponents);
+            for (String opponent : opponents) {
+                if (teamToBeats.get(opponent) == null) {
+                    aBeatB(opponent, teamToBeat);
+                }
+            }
+        }
+
+        for (String teamName : teamToBeats.keySet()) {
+            TeamToBeat teamToBeat = teamToBeats.get(teamName);
             if (teamToBeat.gamesToPlay == 1) {
                 TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
-                // -1?
                 if (teamToBeat.pointsOffEqual == 0) {
                     aBeatB(opponent, teamToBeat);
                 } else if (teamToBeat.pointsOffEqual == 1 || teamToBeat.pointsOffEqual == 2) {
@@ -41,6 +50,16 @@ public class NearbyTeamsCalculator {
 
         for (String teamName : teamToBeats.keySet()) {
             TeamToBeat teamToBeat = teamToBeats.get(teamName);
+            List<String> opponents = new ArrayList<>(teamToBeat.opponents);
+            for (String opponent : opponents) {
+                if (teamToBeats.get(opponent) == null) {
+                    aBeatB(teamToBeat, opponent);
+                }
+            }
+        }
+
+        for (String teamName : teamToBeats.keySet()) {
+            TeamToBeat teamToBeat = teamToBeats.get(teamName);
             if (teamToBeat.gamesToPlay == 1) {
                 TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
                 if (teamToBeat.pointsOffEqual == 3 || teamToBeat.pointsOffEqual == 2) {
@@ -52,19 +71,12 @@ public class NearbyTeamsCalculator {
                 }
             }
         }
-
-
         // assign obvious results
         // assign all external games as wins && remove all teams which are over threshold -> repeat until done
 
         // work out greedy picking, choose the top team until over threshold order opponents by points (-games????)
 
         return (int)teamToBeats.values().stream().filter(team -> team.pointsOffEqual > 0).count();
-    }
-
-    private static List<TeamStatus> findTeamsPlayingEachOther(List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer gamesInRange) {
-        List<String> teamNames = teamsWithinRange.stream().map(TeamStatus::getName).collect(Collectors.toList());
-        return teamsWithinRange.stream().filter(teamStatus -> teamToOpponents.get(teamStatus.getName()).stream().limit(gamesInRange).anyMatch(teamName -> teamNames.contains(teamName))).collect(Collectors.toList());
     }
 
     private static Map<String, TeamToBeat> calcTeamsToBeat(int targetPoints, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
@@ -75,17 +87,22 @@ public class NearbyTeamsCalculator {
     }
 
     private static void aBeatB(TeamToBeat teamA, TeamToBeat teamB) {
-        if (teamA != null) {
-            teamA.gamesToPlay -= 1;
-            teamA.pointsOffEqual -= 3;
-            if (teamB != null) {
-                teamA.opponents.remove(teamB.getName());
-                teamB.opponents.remove(teamA.getName());
-            }
-        }
-        if (teamB != null) {
-            teamB.gamesToPlay -= 1;
-        }
+        teamA.gamesToPlay -= 1;
+        teamA.pointsOffEqual -= 3;
+        teamA.opponents.remove(teamB.getName());
+        teamB.opponents.remove(teamA.getName());
+        teamB.gamesToPlay -= 1;
+    }
+
+    private static void aBeatB(TeamToBeat teamA, String loserName) {
+        teamA.gamesToPlay -= 1;
+        teamA.pointsOffEqual -= 3;
+        teamA.opponents.remove(loserName);
+    }
+
+    private static void aBeatB(String winnerName, TeamToBeat teamB) {
+        teamB.opponents.remove(winnerName);
+        teamB.gamesToPlay -= 1;
     }
 
     private static void aDrewWithB(TeamToBeat teamA, TeamToBeat teamB) {

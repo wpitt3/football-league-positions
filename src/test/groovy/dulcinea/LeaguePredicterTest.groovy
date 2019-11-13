@@ -118,14 +118,9 @@ class LeaguePredicterTest extends Specification {
         given:
           Table table = new Table()
           table.updateTable(matches(), 2)
-          println table.printTable()
     
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
-//
-          result.each{
-              println it
-          }
         
         then:
           result.size() == 6
@@ -150,14 +145,9 @@ class LeaguePredicterTest extends Specification {
         
           Table table = new Table()
           table.updateTable(matches, 1)
-          println table.printTable()
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches, 1, 1)
-  
-          result.each{
-              println it
-          }
         
         then:
           result.size() == 4
