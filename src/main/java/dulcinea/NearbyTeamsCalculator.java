@@ -22,19 +22,32 @@ public class NearbyTeamsCalculator {
                 }
             }
         }
+        for (int i =0; i<10;i++) {
+            for (String teamName : teamToBeats.keySet()) {
+                TeamToBeat teamToBeat = teamToBeats.get(teamName);
+                if (teamToBeat.pointsOffEqual >= 0) {
+                    List<String> opponents = new ArrayList<>(teamToBeat.opponents);
+                    for (String opponent : opponents) {
+                        aBeatB(teamToBeat, teamToBeats.get(opponent));
+                    }
+                }
 
-        for (String teamName : teamToBeats.keySet()) {
-            TeamToBeat teamToBeat = teamToBeats.get(teamName);
-            if (teamToBeat.gamesToPlay == 1) {
-                TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
-                if (teamToBeat.pointsOffEqual == 0) {
-                    aBeatB(opponent, teamToBeat);
-                } else if (teamToBeat.pointsOffEqual == 1 || teamToBeat.pointsOffEqual == 2) {
-                    aDrewWithB(teamToBeat, opponent);
-                } else {
-                    aBeatB(teamToBeat, opponent);
+                if (teamToBeat.gamesToPlay == 1) {
+                    TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
+                    if (teamToBeat.pointsOffEqual == 0) {
+                        aBeatB(opponent, teamToBeat);
+                    } else if (teamToBeat.pointsOffEqual == 1 || teamToBeat.pointsOffEqual == 2) {
+                        aDrewWithB(teamToBeat, opponent);
+                    } else {
+                        aBeatB(teamToBeat, opponent);
+                    }
                 }
             }
+        }
+
+        List<TeamToBeat> teamsLeft = teamToBeats.values().stream().filter(team -> team.gamesToPlay > 0).collect(Collectors.toList());
+        if( teamsLeft.size() > 0) {
+            System.out.println("v Cool " + mainTeam.getName());
         }
         // assign obvious results
         // assign all external games as wins && remove all teams which are over threshold -> repeat until done
@@ -57,19 +70,32 @@ public class NearbyTeamsCalculator {
                 }
             }
         }
+        for (int i =0; i<10;i++) {
+            for (String teamName : teamToBeats.keySet()) {
+                TeamToBeat teamToBeat = teamToBeats.get(teamName);
+                if (teamToBeat.pointsOffEqual <= 0 || teamToBeat.gamesToPlay * 3 < teamToBeat.pointsOffEqual) {
+                    List<String> opponents = new ArrayList<>(teamToBeat.opponents);
+                    for (String opponent : opponents) {
+                        aBeatB(teamToBeats.get(opponent), teamToBeat);
+                    }
+                }
 
-        for (String teamName : teamToBeats.keySet()) {
-            TeamToBeat teamToBeat = teamToBeats.get(teamName);
-            if (teamToBeat.gamesToPlay == 1) {
-                TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
-                if (teamToBeat.pointsOffEqual == 3 || teamToBeat.pointsOffEqual == 2) {
-                    aBeatB(teamToBeat, opponent);
-                } else if (teamToBeat.pointsOffEqual == 1) {
-                    aDrewWithB(teamToBeat, opponent);
-                } else {
-                    aBeatB(opponent, teamToBeat);
+                if (teamToBeat.gamesToPlay == 1) {
+                    TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
+                    if (teamToBeat.pointsOffEqual == 3 || teamToBeat.pointsOffEqual == 2) {
+                        aBeatB(teamToBeat, opponent);
+                    } else if (teamToBeat.pointsOffEqual == 1) {
+                        aDrewWithB(teamToBeat, opponent);
+                    } else {
+                        aBeatB(opponent, teamToBeat);
+                    }
                 }
             }
+        }
+
+        List<TeamToBeat> teamsLeft = teamToBeats.values().stream().filter(team -> team.gamesToPlay > 0).collect(Collectors.toList());
+        if( teamsLeft.size() > 0) {
+            System.out.println("Cool " + mainTeam.getName());
         }
         // assign obvious results
         // assign all external games as wins && remove all teams which are over threshold -> repeat until done
