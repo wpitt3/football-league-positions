@@ -1,8 +1,6 @@
 package dulcinea;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,16 +20,24 @@ public class NearbyTeamsCalculator {
                 }
             }
         }
-        for (int i =0; i<10;i++) {
+
+        for (int i=0; i<10;i++) {
             for (String teamName : teamToBeats.keySet()) {
                 TeamToBeat teamToBeat = teamToBeats.get(teamName);
-                if (teamToBeat.getGamesToPlay() == 1) {
+                if (teamToBeat.getGamesToPlay() * 3 < teamToBeat.pointsOffEqual) {
+                    List<String> opponents = new ArrayList<>(teamToBeat.opponents);
+                    for (String opponent : opponents) {
+                        aBeatB(teamToBeats.get(opponent), teamToBeat);
+                    }
+                }
+                if (teamToBeat.getGamesToPlay() > 0) {
                     TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
                     if (teamToBeat.pointsOffEqual == 0) {
                         aBeatB(opponent, teamToBeat);
                     } else if (teamToBeat.pointsOffEqual == 1 || teamToBeat.pointsOffEqual == 2) {
                         aDrewWithB(teamToBeat, opponent);
-                    } else {
+                    }
+                    if (teamToBeat.getGamesToPlay() == 1 && (teamToBeat.pointsOffEqual < 0 || teamToBeat.pointsOffEqual > 2)) {
                         aBeatB(teamToBeat, opponent);
                     }
                 }
@@ -53,6 +59,7 @@ public class NearbyTeamsCalculator {
         int targetPoints = mainTeam.getPoints();
 
         Map<String, TeamToBeat> teamToBeats = calcTeamsToBeat(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
+        teamToBeats = sortTeamsByPoints(teamToBeats);
 
         for (String teamName : teamToBeats.keySet()) {
             TeamToBeat teamToBeat = teamToBeats.get(teamName);
@@ -63,18 +70,41 @@ public class NearbyTeamsCalculator {
                 }
             }
         }
-        for (int i =0; i<10;i++) {
+        boolean change = true;
+        for (int i = 0; i<10;i++) {
+            if (!change) {
+                Optional<TeamToBeat> x = teamToBeats.values().stream().filter(teamToBeat -> teamToBeat.getGamesToPlay() > 0).sorted(new Comparator<TeamToBeat>() {
+                    @Override
+                    public int compare(TeamToBeat o1, TeamToBeat o2) {
+                        return o1.getPointsOffEqual() - o2.getPointsOffEqual();
+                    }
+                }).findFirst();
+                if (x.isPresent()) {
+                    aBeatB(x.get(), teamToBeats.get(x.get().getOpponents().get(0)));
+                }
+            }
+            change = false;
             for (String teamName : teamToBeats.keySet()) {
                 TeamToBeat teamToBeat = teamToBeats.get(teamName);
-
-                if (teamToBeat.getGamesToPlay() == 1) {
+                if (teamToBeat.pointsOffEqual <= 0 || teamToBeat.getGamesToPlay() * 3 < teamToBeat.pointsOffEqual) {
+                    List<String> opponents = new ArrayList<>(teamToBeat.opponents);
+                    for (String opponent : opponents) {
+                        aBeatB(teamToBeats.get(opponent), teamToBeat);
+                        change = true;
+                    }
+                }
+                if (teamToBeat.getGamesToPlay() > 0) {
                     TeamToBeat opponent = teamToBeats.get(teamToBeat.getOpponents().get(0));
                     if (teamToBeat.pointsOffEqual == 3 || teamToBeat.pointsOffEqual == 2) {
                         aBeatB(teamToBeat, opponent);
+                        change = true;
                     } else if (teamToBeat.pointsOffEqual == 1) {
                         aDrewWithB(teamToBeat, opponent);
-                    } else {
+                        change = true;
+                    }
+                    if (teamToBeat.getGamesToPlay() == 1 && (teamToBeat.pointsOffEqual > 3 || teamToBeat.pointsOffEqual < 1)) {
                         aBeatB(opponent, teamToBeat);
+                        change = true;
                     }
                 }
             }
@@ -96,6 +126,22 @@ public class NearbyTeamsCalculator {
             List<String> opponents = teamToOpponents.get(teamStatus.getName()).stream().limit(matchesLookAhead).collect(Collectors.toList());
             return new TeamToBeat(teamStatus.getName(), opponents, targetPoints - teamStatus.getPoints());
         }).collect(Collectors.toMap(TeamToBeat::getName, Function.identity()));
+    }
+
+    private static Map<String, TeamToBeat> sortTeamsByPoints(Map<String, TeamToBeat> teamsToBeat) {
+        teamsToBeat.keySet().stream().forEach(teamName -> {
+            TeamToBeat x = teamsToBeat.get(teamName);
+            x.getOpponents().sort(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    int team1Points = teamsToBeat.get(o1) != null ? teamsToBeat.get(o1).getPointsOffEqual() : + 1000;
+                    int team2Points = teamsToBeat.get(o2) != null ? teamsToBeat.get(o2).getPointsOffEqual() : + 1000;
+
+                    return team2Points - team1Points;
+                }
+            });
+        });
+        return teamsToBeat;
     }
 
     private static void aBeatB(TeamToBeat teamA, TeamToBeat teamB) {
@@ -143,9 +189,23 @@ public class NearbyTeamsCalculator {
             return opponents;
         }
 
+        public void setOpponents(List<String> opponents) {
+            this.opponents = opponents;
+        }
+
         public int getPointsOffEqual() {
             return pointsOffEqual;
         }
     }
-
+//    private class TeamComparator implements Comparator<String> {
+//        Map<String, TeamToBeat> teamsToBeat;
+//
+//        TeamComparator(Map<String, TeamToBeat> teamsToBeat) {
+//            this.teamsToBeat = teamsToBeat;
+//        }
+//
+//        public int compare(String c1, String c2) {
+//            return teamsToBeat.get(c1).getPointsOffEqual() - teamsToBeat.get(c2).getPointsOffEqual();
+//        }
+//    }
 }
