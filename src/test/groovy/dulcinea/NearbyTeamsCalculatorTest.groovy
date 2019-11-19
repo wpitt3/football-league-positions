@@ -1,5 +1,6 @@
 package dulcinea
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class NearbyTeamsCalculatorTest extends Specification {
@@ -7,6 +8,8 @@ class NearbyTeamsCalculatorTest extends Specification {
     private static final String TEAM_B = "TeamB"
     private static final String TEAM_C = "TeamC"
     private static final String TEAM_D = "TeamD"
+    private static final String TEAM_E = "TeamE"
+    private static final String TEAM_F = "TeamF"
     
     
     void "Both teams are on the same points as TeamD and are catchable"() {
@@ -202,6 +205,30 @@ class NearbyTeamsCalculatorTest extends Specification {
     
         then:
           result == 1
+    }
+    
+    @Ignore
+    void "All three teams can beat top of table, but a points must be perfectly distributed"() {
+        given:
+          Table table = basicTable()
+          table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
+          table.teams[0].won += 2
+          table.teams[1].won += 1
+          table.teams[2].drawn += 1
+          table.teams[3].drawn += 1
+        
+          List<TeamStatus> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3], table.teams[4]]
+          Map<String, ArrayList<String>> teamToOpponents =
+                  [(TEAM_B): [TEAM_E, TEAM_E, TEAM_C],
+                    (TEAM_C): [TEAM_B, TEAM_D, TEAM_D, TEAM_D, TEAM_D],
+                    (TEAM_D): [TEAM_C, TEAM_C, TEAM_C, TEAM_C],
+                    (TEAM_E): [TEAM_B, TEAM_B]]
+        
+        when:
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], teamsPlayingEachOther, teamToOpponents, 3)
+        
+        then:
+          result == 0
     }
     
     private Table basicTable() {
