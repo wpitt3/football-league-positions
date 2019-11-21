@@ -47,7 +47,7 @@ public class NearbyTeamsCalculator {
         int targetPoints = mainTeam.getPoints();
 
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
-        teams = sortTeamsByPoints(teams);
+        //sort teams dependenton how many points are remaining vs games
 
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
             aBeatB(team, opponent);

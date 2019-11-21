@@ -207,7 +207,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           result == 1
     }
     
-    @Ignore
+//    @Ignore
     void "All three teams can beat top of table, but a points must be perfectly distributed"() {
         given:
           Table table = basicTable()
