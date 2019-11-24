@@ -19,9 +19,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           table.teams[2].goalsFor = 1
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-        
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 0
@@ -32,9 +30,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,2,2)
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 0
@@ -45,9 +41,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,3)
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 0
@@ -58,9 +52,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,3,2)
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 1
@@ -69,11 +61,9 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "2 teams 2 games both 3 points ahead"() {
         given:
           Table table = basicTable(10,3,3)
-          
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_C], (TEAM_C): [TEAM_B, TEAM_B]]
         
         when:
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 2)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result == 0
@@ -82,11 +72,9 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "2 teams 2 games one 5 points ahead, one 2 point ahead"() {
         given:
           Table table = basicTable(10,5,2)
-          
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_C], (TEAM_C): [TEAM_B, TEAM_B]]
         
         when:
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 2)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result == 0
@@ -95,11 +83,9 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "2 teams 2 games one 5 points ahead, one 6 points ahead"() {
         given:
           Table table = basicTable(10,6,5)
-          
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_C], (TEAM_C): [TEAM_B, TEAM_B]]
         
         when:
-          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), teamToOpponents, 2)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result == 1
@@ -128,9 +114,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           table.teams[0].goalsFor = 2
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 0
@@ -141,9 +125,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(1)
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 0
@@ -154,9 +136,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(3,3)
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 0
@@ -167,9 +147,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(3,2)
         
         when:
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C], (TEAM_C): [TEAM_B]]
-          
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 1)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result == 1
@@ -179,10 +157,8 @@ class NearbyTeamsCalculatorTest extends Specification {
         given:
           Table table = basicTable(3)
         
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_C], (TEAM_C): [TEAM_B, TEAM_B]]
-        
         when:
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 2)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result == 0
@@ -191,11 +167,9 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "2 teams 2 games one 4 points off, one 1 point off"() {
         given:
           Table table = basicTable(4,3)
-        
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_C], (TEAM_C): [TEAM_B, TEAM_B]]
     
         when:
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 2)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
     
         then:
           result == 0
@@ -204,10 +178,9 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "2 teams 2 games one 6 points off, one 7 points off"() {
         given:
           Table table = basicTable(7,1)
-          Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_C], (TEAM_C): [TEAM_B, TEAM_B]]
-    
+          
         when:
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), teamToOpponents, 2)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
     
         then:
           result == 1
@@ -261,5 +234,9 @@ class NearbyTeamsCalculatorTest extends Specification {
     
     private static List midTwoTeams(Table table) {
         return [table.teams[1], table.teams[2]]
+    }
+    
+    private static Map<String, ArrayList<String>> midTeamOpponents(int times = 1) {
+        return [(TEAM_B): [TEAM_C]*times, (TEAM_C): [TEAM_B]*times]
     }
 }
