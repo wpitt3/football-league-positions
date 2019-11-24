@@ -19,7 +19,6 @@ public class NearbyTeamsCalculator {
         for (int i=0; i<50;i++) {
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
             if (previousGamesRemaining == gamesRemaining) {
-                //
                 teams = sortTeamsByPoints(teams);
                 teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
                         aBeatB(topTeam, sortTeamsByPoints(topTeam.getOpponents()).get(0))
@@ -27,23 +26,7 @@ public class NearbyTeamsCalculator {
             }
             previousGamesRemaining = gamesRemaining;
             for( Team team : teams) {
-                if (team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
-                    for (Team opponent : new ArrayList<>(team.getOpponents())) {
-                        aBeatB(opponent, team);
-                    }
-                }
-                if (team.getGamesToPlay() > 0) {
-                    Team opponent = team.getOpponents().get(0);
-                    if (team.getGamesToPlay() == 1) {
-                        if (team.getPointsOffEqual() == 0) {
-                            aBeatB(opponent, team);
-                        } else if (team.getPointsOffEqual() == 1 || team.getPointsOffEqual() == 2) {
-                            aDrewWithB(team, opponent);
-                        } else if (team.getPointsOffEqual() < 0 || team.getPointsOffEqual() > 2) {
-                            aBeatB(team, opponent);
-                        }
-                    }
-                }
+                resolveCatchableTeams(team);
             }
         }
 
@@ -55,9 +38,8 @@ public class NearbyTeamsCalculator {
 
     public static int teamsWhichCannotCatchMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints();
-
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
-        //sort teams dependenton how many points are remaining vs games
+        //sort teams dependent on how many points are remaining vs games
 
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
             aBeatB(team, opponent);
@@ -77,11 +59,6 @@ public class NearbyTeamsCalculator {
             previousGamesRemaining = gamesRemaining;
 
             for(Team team : teams) {
-                if (team.getPointsOffEqual() <= 0 || team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
-                    for (Team opponent : new ArrayList<>(team.getOpponents())) {
-                        aBeatB(opponent, team);
-                    }
-                }
                 resolveCatchingTeams(team);
             }
         }
@@ -92,7 +69,30 @@ public class NearbyTeamsCalculator {
         return (int)teams.stream().filter(team -> team.getPointsOffEqual() > 0).count();
     }
 
+    private static void resolveCatchableTeams(Team team) {
+        if (team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
+            for (Team opponent : new ArrayList<>(team.getOpponents())) {
+                aBeatB(opponent, team);
+            }
+        }
+        if (team.getGamesToPlay() == 1) {
+            Team opponent = team.getOpponents().get(0);
+            if (team.getPointsOffEqual() == 0) {
+                aBeatB(opponent, team);
+            } else if (team.getPointsOffEqual() == 1 || team.getPointsOffEqual() == 2) {
+                aDrewWithB(team, opponent);
+            } else if (team.getPointsOffEqual() < 0 || team.getPointsOffEqual() > 2) {
+                aBeatB(team, opponent);
+            }
+        }
+    }
+
     private static void resolveCatchingTeams(Team team) {
+        if (team.getPointsOffEqual() <= 0 || team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
+            for (Team opponent : new ArrayList<>(team.getOpponents())) {
+                aBeatB(opponent, team);
+            }
+        }
         if (team.getGamesToPlay() > 0) {
             Team opponent = team.getOpponents().get(0);
             if (team.getPointsOffEqual() == 3 || team.getPointsOffEqual() == 2) {
@@ -107,13 +107,16 @@ public class NearbyTeamsCalculator {
     }
 
     private static List<Team> calcTeams(int targetPoints, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
-        Map<String, Team> nameToTeam = teamsWithinRange.stream().map(teamStatus -> {
-            List<String> opponents = teamToOpponents.get(teamStatus.getName()).stream().limit(matchesLookAhead).collect(Collectors.toList());
-            return new Team(teamStatus.getName(), opponents, targetPoints - teamStatus.getPoints());
-        }).collect(Collectors.toMap(Team::getName, Function.identity()));
+        Map<String, Team> nameToTeam = teamsWithinRange.stream().map(teamStatus ->
+            new Team(teamStatus.getName(), targetPoints - teamStatus.getPoints())
+        ).collect(Collectors.toMap(Team::getName, Function.identity()));
 
         return nameToTeam.values().stream().map(team -> {
-            List<Team> opponents = team.getOpponentNames().stream().map(nameToTeam::get).collect(Collectors.toList());
+            List<Team> opponents = teamToOpponents.get(team.getName())
+                    .stream()
+                    .limit(matchesLookAhead)
+                    .map(nameToTeam::get)
+                    .collect(Collectors.toList());
             team.setOpponents(opponents);
             return team;
         }).collect(Collectors.toList());
