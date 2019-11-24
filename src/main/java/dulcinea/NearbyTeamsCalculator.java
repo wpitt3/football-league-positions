@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public class NearbyTeamsCalculator {
 
-    //this needs a second pass for the goal difference
     public static int teamsWhichAreNotCatchablebyMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints() + 3 * matchesLookAhead;
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
