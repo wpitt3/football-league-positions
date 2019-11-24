@@ -15,29 +15,39 @@ public class NearbyTeamsCalculator {
             aBeatB(opponent, team);
         }));
 
-        for (int i=0; i<20;i++) {
+        int previousGamesRemaining = 0;
+        for (int i=0; i<50;i++) {
+            int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
+            if (previousGamesRemaining == gamesRemaining) {
+                //
+                teams = sortTeamsByPoints(teams);
+                teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
+                        aBeatB(topTeam, sortTeamsByPoints(topTeam.getOpponents()).get(0))
+                );
+            }
+            previousGamesRemaining = gamesRemaining;
             for( Team team : teams) {
                 if (team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
-                    team.getOpponents().forEach(opponent ->
-                        aBeatB(opponent, team)
-                    );
+                    for (Team opponent : new ArrayList<>(team.getOpponents())) {
+                        aBeatB(opponent, team);
+                    }
                 }
                 if (team.getGamesToPlay() > 0) {
                     Team opponent = team.getOpponents().get(0);
-                    if (team.getPointsOffEqual() == 0) {
-                        aBeatB(opponent, team);
-                    } else if (team.getPointsOffEqual() == 1 || team.getPointsOffEqual() == 2) {
-                        aDrewWithB(team, opponent);
-                    }
-                    if (team.getGamesToPlay() == 1 && (team.getPointsOffEqual() < 0 || team.getPointsOffEqual() > 2)) {
-                        aBeatB(team, opponent);
+                    if (team.getGamesToPlay() == 1) {
+                        if (team.getPointsOffEqual() == 0) {
+                            aBeatB(opponent, team);
+                        } else if (team.getPointsOffEqual() == 1 || team.getPointsOffEqual() == 2) {
+                            aDrewWithB(team, opponent);
+                        } else if (team.getPointsOffEqual() < 0 || team.getPointsOffEqual() > 2) {
+                            aBeatB(team, opponent);
+                        }
                     }
                 }
             }
         }
 
-        List<Team> teamsLeft = teams.stream().filter(team -> team.getGamesToPlay() > 0).collect(Collectors.toList());
-        if( teamsLeft.size() > 0) {
+        if( teams.stream().anyMatch(team -> team.getGamesToPlay() > 0)) {
             throw new RuntimeException("Not fully resolved");
         }
         return (int)teams.stream().filter(team -> team.getPointsOffEqual() < 0).count();
@@ -76,8 +86,7 @@ public class NearbyTeamsCalculator {
             }
         }
 
-        List<Team> teamsLeft = teams.stream().filter(team -> team.getGamesToPlay() > 0).collect(Collectors.toList());
-        if( teamsLeft.size() > 0) {
+        if( teams.stream().anyMatch(team -> team.getGamesToPlay() > 0)) {
             throw new RuntimeException("Not fully resolved");
         }
         return (int)teams.stream().filter(team -> team.getPointsOffEqual() > 0).count();
