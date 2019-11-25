@@ -46,11 +46,10 @@ public class NearbyTeamsCalculator {
 
         int previousGamesRemaining = 0;
         for (int i = 0; i < 50; i++) {
+            teams = sortTeamsOpponentsToBeCatching(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
             if (previousGamesRemaining == gamesRemaining) {
                 // if there is enough points to go around, they should go to the shittest team first
-                teams = sortTeamsByPoints(teams);
-                Collections.reverse(teams);
                 teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
                     aBeatB(topTeam, sortTeamsByPoints(topTeam.getOpponents()).get(0))
                 );
@@ -119,6 +118,25 @@ public class NearbyTeamsCalculator {
             team.setOpponents(opponents);
             return team;
         }).collect(Collectors.toList());
+    }
+
+    private static List<Team> sortTeamsOpponentsToBeCatching(List<Team> teams) {
+        // this is an estimate
+        int pointRequired = teams.stream().map(Team::getPointsOffEqual).filter(x -> x > 0).reduce(0, (a, b) -> a + b);
+        int pointsRemaining = teams.stream().map(Team::getGamesToPlay).reduce(0, (a, b) -> a + b) / 2 * 3;
+        teams.forEach(team -> {
+            List<Team> opponents = sortTeamsByPoints(team.getOpponents());
+            if (pointRequired > pointsRemaining) {
+                Collections.reverse(opponents);
+            }
+            team.setOpponents(opponents);
+        });
+
+        teams = sortTeamsByPoints(teams);
+        if (pointRequired > pointsRemaining) {
+            Collections.reverse(teams);
+        }
+        return teams;
     }
 
     private static List<Team> sortTeamsByPoints(List<Team> teams) {
