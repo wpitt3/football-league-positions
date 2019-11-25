@@ -1,5 +1,6 @@
 package dulcinea;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +22,9 @@ public class Team {
         return opponents.size();
     }
 
-
     public void removeOpponent(Team opponent) {
-        if (opponent != null ) {
-            if ( opponents != null) {
-                this.opponents.remove(opponent);
-            }
+        if ( opponents != null) {
+            this.opponents.remove(opponent);
         }
     }
 
@@ -39,7 +37,7 @@ public class Team {
     }
 
     public List<Team> getOpponents() {
-        return opponents;
+        return new ArrayList<>(opponents);
     }
 
     public void setOpponents(List<Team> opponents) {

@@ -70,7 +70,7 @@ public class NearbyTeamsCalculator {
 
     private static void resolveCatchableTeams(Team team) {
         if (team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
-            for (Team opponent : new ArrayList<>(team.getOpponents())) {
+            for (Team opponent : team.getOpponents()) {
                 aBeatB(opponent, team);
             }
         }
@@ -88,7 +88,7 @@ public class NearbyTeamsCalculator {
 
     private static void resolveCatchingTeams(Team team) {
         if (team.getPointsOffEqual() <= 0 || team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
-            for (Team opponent : new ArrayList<>(team.getOpponents())) {
+            for (Team opponent : team.getOpponents()) {
                 aBeatB(opponent, team);
             }
         }
