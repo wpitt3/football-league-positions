@@ -21,49 +21,53 @@ public class LeaguePredicter {
         return table.getTeams().stream().map( team -> {
             LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getPosition());
 
-            List<TeamStatus> catchableTeams = findCatchableTeams(table, team.getPosition(), team.getPoints() + maxPoints);
-            if (catchableTeams.size() == 0) {
-                leaguePositionStats.setHighestPossible(team.getPosition());
-            } else {
-                int teamsWhichCanCatchMainTeam = catchableTeams.size() - NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(team, catchableTeams, teamToOpponents, matchesLookAhead);
-                int teamsWithinPointsAndGoalDifference = calcTeamsAheadWithinPointsAndGoalDiff(catchableTeams, maxPoints, team).size();
-
-                if (teamsWhichCanCatchMainTeam != catchableTeams.size()) {
-                    leaguePositionStats.setHighestPossible(team.getPosition() -  teamsWhichCanCatchMainTeam);
-                    leaguePositionStats.setHighestImpossible(team.getPosition() - catchableTeams.size());
-                    if (teamsWithinPointsAndGoalDifference < teamsWhichCanCatchMainTeam) {
-                        teamsWithinPointsAndGoalDifference = teamsWhichCanCatchMainTeam;
-                    }
-                } else {
-                    leaguePositionStats.setHighestPossible(team.getPosition() - catchableTeams.size());
-                }
-                if (team.getPosition() - teamsWithinPointsAndGoalDifference != leaguePositionStats.getHighestPossible()) {
-                    leaguePositionStats.setHighestWithoutLargeSwing(team.getPosition() - teamsWithinPointsAndGoalDifference);
-                }
-            }
-
-            List<TeamStatus> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getPosition(), team.getPoints() - maxPoints);
-            if (teamsCatchingUp.size() == 0) {
-                leaguePositionStats.setLowestPossible(team.getPosition());
-            } else {
-                int teamsWhichCanCatchMainTeam = teamsCatchingUp.size() - NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(team, teamsCatchingUp, teamToOpponents, matchesLookAhead);
-                int teamsWithinPointsAndGoalDifference = calcTeamsBehindWithinPointsAndGoalDiff(teamsCatchingUp, maxPoints, team).size();
-
-                if (teamsWhichCanCatchMainTeam != teamsCatchingUp.size()) {
-                    leaguePositionStats.setLowestPossible(team.getPosition() + teamsWhichCanCatchMainTeam);
-                    leaguePositionStats.setLowestImpossible(team.getPosition() + teamsCatchingUp.size());
-                    if (teamsWithinPointsAndGoalDifference > teamsWhichCanCatchMainTeam) {
-                        teamsWithinPointsAndGoalDifference = teamsWhichCanCatchMainTeam;
-                    }
-                } else {
-                    leaguePositionStats.setLowestPossible(team.getPosition() + teamsCatchingUp.size());
-                }
-                if (team.getPosition() + teamsWithinPointsAndGoalDifference != leaguePositionStats.getLowestPossible()) {
-                    leaguePositionStats.setLowestWithoutLargeSwing(team.getPosition() + teamsWithinPointsAndGoalDifference);
-                }
-            }
+            leaguePositionStats = updateLpsWithCatchableTeams(table, matchesLookAhead, maxPoints, teamToOpponents, team, leaguePositionStats);
+            leaguePositionStats = updateLpsWithCatchingTeams(table, matchesLookAhead, maxPoints, teamToOpponents, team, leaguePositionStats);
             return leaguePositionStats;
         }).collect(Collectors.toList());
+    }
+
+    private static LeaguePositionStats updateLpsWithCatchingTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, TeamStatus team, LeaguePositionStats leaguePositionStats) {
+        List<TeamStatus> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getPosition(), team.getPoints() - maxPoints);
+        if (teamsCatchingUp.size() == 0) {
+            leaguePositionStats.setLowestPossible(team.getPosition());
+            return leaguePositionStats;
+        }
+
+        int teamsWhichCanCatchMainTeam = teamsCatchingUp.size() - NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(team, teamsCatchingUp, teamToOpponents, matchesLookAhead);
+        int teamsWithinPointsAndGoalDifference = calcTeamsBehindWithinPointsAndGoalDiff(teamsCatchingUp, maxPoints, team).size();
+
+        if (teamsWhichCanCatchMainTeam != teamsCatchingUp.size()) {
+            leaguePositionStats.setLowestImpossible(team.getPosition() + teamsCatchingUp.size());
+            teamsWithinPointsAndGoalDifference = Math.min(teamsWithinPointsAndGoalDifference,teamsWhichCanCatchMainTeam);
+        }
+        leaguePositionStats.setLowestPossible(team.getPosition() + teamsWhichCanCatchMainTeam);
+        if (team.getPosition() + teamsWithinPointsAndGoalDifference != leaguePositionStats.getLowestPossible()) {
+            leaguePositionStats.setLowestWithoutLargeSwing(team.getPosition() + teamsWithinPointsAndGoalDifference);
+        }
+        return leaguePositionStats;
+    }
+
+    private static LeaguePositionStats updateLpsWithCatchableTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, TeamStatus team, LeaguePositionStats leaguePositionStats) {
+        List<TeamStatus> catchableTeams = findCatchableTeams(table, team.getPosition(), team.getPoints() + maxPoints);
+        if (catchableTeams.size() == 0) {
+            leaguePositionStats.setHighestPossible(team.getPosition());
+            return leaguePositionStats;
+        }
+        int teamsWhichCanCatchMainTeam = catchableTeams.size() - NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(team, catchableTeams, teamToOpponents, matchesLookAhead);
+        int teamsWithinPointsAndGoalDifference = calcTeamsAheadWithinPointsAndGoalDiff(catchableTeams, maxPoints, team).size();
+
+        if (teamsWhichCanCatchMainTeam != catchableTeams.size()) {
+            leaguePositionStats.setHighestImpossible(team.getPosition() - catchableTeams.size());
+            teamsWithinPointsAndGoalDifference = Math.max(teamsWithinPointsAndGoalDifference, teamsWhichCanCatchMainTeam);
+        }
+        leaguePositionStats.setHighestPossible(team.getPosition() - teamsWhichCanCatchMainTeam);
+
+        if (team.getPosition() - teamsWithinPointsAndGoalDifference != leaguePositionStats.getHighestPossible()) {
+            leaguePositionStats.setHighestWithoutLargeSwing(team.getPosition() - teamsWithinPointsAndGoalDifference);
+        }
+
+        return leaguePositionStats;
     }
 
     private static List<TeamStatus> findCatchableTeams(Table table, int currentPosition, int maxPossiblePoints) {
