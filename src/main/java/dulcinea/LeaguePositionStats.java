@@ -24,10 +24,6 @@ public class LeaguePositionStats {
         return teamName;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
     public Integer getHighestPossible() {
         return highestPossible;
     }
@@ -40,16 +36,22 @@ public class LeaguePositionStats {
         return currentPosition;
     }
 
-    public void setCurrentPosition(Integer currentPosition) {
-        this.currentPosition = currentPosition;
-    }
-
     public Integer getLowestPossible() {
         return lowestPossible;
     }
 
     public void setLowestPossible(Integer lowestPossible) {
         this.lowestPossible = lowestPossible;
+    }
+
+    public LeaguePositionStats withLowestPossible(Integer lowestPossible) {
+        this.lowestPossible = lowestPossible;
+        return this;
+    }
+
+    public LeaguePositionStats withHighestPossible(Integer highestPossible) {
+        this.highestPossible = highestPossible;
+        return this;
     }
 
     @Override
