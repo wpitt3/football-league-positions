@@ -105,6 +105,27 @@ class NearbyTeamsCalculatorTest extends Specification {
           result == 1
     }
     
+    void "All four teams can be beated by fifth place, but a points must be perfectly distributed"() {
+        given:
+          Table table = basicTable(6,6,6,0)
+          table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
+
+          List<TeamStatus> teamsPlayingEachOther = [ table.teams[0], table.teams[1], table.teams[2], table.teams[3]]
+          Map<String, ArrayList<String>> teamToOpponents =
+                  [
+                    (TEAM_A): [TEAM_B, TEAM_B, TEAM_D],
+                    (TEAM_B): [TEAM_A, TEAM_A, TEAM_C],
+                    (TEAM_C): [TEAM_B, TEAM_D, TEAM_D],
+                    (TEAM_D): [TEAM_C, TEAM_C, TEAM_A]
+                  ]
+
+        when:
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[4], teamsPlayingEachOther, teamToOpponents, 3)
+
+        then:
+          result == 0
+    }
+    
     // TEAM being caught  |
     //                    v
     
@@ -201,18 +222,18 @@ class NearbyTeamsCalculatorTest extends Specification {
     
     void "All three teams can beat top of table, but a points must be perfectly distributed"() {
         given:
-          Table table = basicTable(6,3,1,1)
+          Table table = basicTable(9,6,4,1)
           table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
         
           List<TeamStatus> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3], table.teams[4]]
           Map<String, ArrayList<String>> teamToOpponents =
                   [(TEAM_B): [TEAM_E, TEAM_E, TEAM_C],
                     (TEAM_C): [TEAM_B, TEAM_D, TEAM_D],
-                    (TEAM_D): [TEAM_C, TEAM_C],
-                    (TEAM_E): [TEAM_B, TEAM_B]]
+                    (TEAM_D): [TEAM_C, TEAM_C, TEAM_A],
+                    (TEAM_E): [TEAM_B, TEAM_B, TEAM_A]]
         
         when:
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], teamsPlayingEachOther, teamToOpponents, 5)
+          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[0], teamsPlayingEachOther, teamToOpponents, 3)
         
         then:
           result == 1

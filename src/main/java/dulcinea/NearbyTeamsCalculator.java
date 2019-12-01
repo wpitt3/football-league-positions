@@ -16,11 +16,11 @@ public class NearbyTeamsCalculator {
 
         int previousGamesRemaining = 0;
         for (int i=0; i<50;i++) {
+            teams = sortTeamsOpponentsToBeCatching(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
             if (previousGamesRemaining == gamesRemaining) {
-                teams = sortTeamsByPoints(teams);
                 teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
-                        aBeatB(topTeam, sortTeamsByPoints(topTeam.getOpponents()).get(0))
+                        aBeatB(topTeam, topTeam.getOpponents().get(0))
                 );
             }
             previousGamesRemaining = gamesRemaining;
@@ -38,7 +38,6 @@ public class NearbyTeamsCalculator {
     public static int teamsWhichCannotCatchMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints();
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
-        //sort teams dependent on how many points are remaining vs games
 
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
             aBeatB(team, opponent);
@@ -49,7 +48,6 @@ public class NearbyTeamsCalculator {
             teams = sortTeamsOpponentsToBeCatching(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
             if (previousGamesRemaining == gamesRemaining) {
-                // if there is enough points to go around, they should go to the shittest team first
                 teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
                     aBeatB(topTeam, sortTeamsByPoints(topTeam.getOpponents()).get(0))
                 );
