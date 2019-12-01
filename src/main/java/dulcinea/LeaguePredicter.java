@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 
 public class LeaguePredicter {
     private static final Integer pointsForAWin = 3;
-    private static final Integer goalDifferenceForBigSwing = 4;
-
 
     public static List<LeaguePositionStats> findPossibleLeaguePositions(Table table, List<Match> matches, Integer matchesPlayed, Integer matchesLookAhead) {
         Integer maxPoints = pointsForAWin * matchesLookAhead;
@@ -35,16 +33,8 @@ public class LeaguePredicter {
         }
 
         int teamsWhichCanCatchMainTeam = teamsCatchingUp.size() - NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(team, teamsCatchingUp, teamToOpponents, matchesLookAhead);
-        int teamsWithinPointsAndGoalDifference = calcTeamsBehindWithinPointsAndGoalDiff(teamsCatchingUp, maxPoints, team).size();
 
-        if (teamsWhichCanCatchMainTeam != teamsCatchingUp.size()) {
-            leaguePositionStats.setLowestImpossible(team.getPosition() + teamsCatchingUp.size());
-            teamsWithinPointsAndGoalDifference = Math.min(teamsWithinPointsAndGoalDifference,teamsWhichCanCatchMainTeam);
-        }
         leaguePositionStats.setLowestPossible(team.getPosition() + teamsWhichCanCatchMainTeam);
-        if (team.getPosition() + teamsWithinPointsAndGoalDifference != leaguePositionStats.getLowestPossible()) {
-            leaguePositionStats.setLowestWithoutLargeSwing(team.getPosition() + teamsWithinPointsAndGoalDifference);
-        }
         return leaguePositionStats;
     }
 
@@ -55,18 +45,7 @@ public class LeaguePredicter {
             return leaguePositionStats;
         }
         int teamsWhichCanCatchMainTeam = catchableTeams.size() - NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(team, catchableTeams, teamToOpponents, matchesLookAhead);
-        int teamsWithinPointsAndGoalDifference = calcTeamsAheadWithinPointsAndGoalDiff(catchableTeams, maxPoints, team).size();
-
-        if (teamsWhichCanCatchMainTeam != catchableTeams.size()) {
-            leaguePositionStats.setHighestImpossible(team.getPosition() - catchableTeams.size());
-            teamsWithinPointsAndGoalDifference = Math.max(teamsWithinPointsAndGoalDifference, teamsWhichCanCatchMainTeam);
-        }
         leaguePositionStats.setHighestPossible(team.getPosition() - teamsWhichCanCatchMainTeam);
-
-        if (team.getPosition() - teamsWithinPointsAndGoalDifference != leaguePositionStats.getHighestPossible()) {
-            leaguePositionStats.setHighestWithoutLargeSwing(team.getPosition() - teamsWithinPointsAndGoalDifference);
-        }
-
         return leaguePositionStats;
     }
 
@@ -79,25 +58,6 @@ public class LeaguePredicter {
     private static List<TeamStatus> findTeamsWhichCouldCatchUp(Table table, int currentPosition, int minPointsOfCatchingTeam) {
         return table.getTeams().stream()
             .filter(team -> team.getPosition() > currentPosition && team.getPoints() >= minPointsOfCatchingTeam)
-            .collect(Collectors.toList());
-    }
-
-    private static List<TeamStatus> calcTeamsAheadWithinPointsAndGoalDiff(List<TeamStatus> teamsAhead, Integer maxPoints, TeamStatus team) {
-        return teamsAhead.stream()
-            .filter(aheadTeam ->
-                aheadTeam.getPoints() < team.getPoints() + maxPoints
-                    || aheadTeam.getGoalDifference() < team.getGoalDifference() + 3
-                    || (aheadTeam.getGoalDifference() == team.getGoalDifference() + 3 && aheadTeam.getGoalsFor() <= team.getGoalsFor())
-            )
-            .collect(Collectors.toList());
-    }
-
-    private static List<TeamStatus> calcTeamsBehindWithinPointsAndGoalDiff(List<TeamStatus> teamsCatchingUp, Integer maxPoints, TeamStatus team) {
-        return teamsCatchingUp.stream()
-            .filter(catchingTeam ->
-                catchingTeam.getPoints() + maxPoints > team.getPoints()
-                    || catchingTeam.getGoalDifference() + 3 > team.getGoalDifference()
-                    || (catchingTeam.getGoalDifference() + 3 == team.getGoalDifference() && catchingTeam.getGoalsFor() >= team.getGoalsFor()))
             .collect(Collectors.toList());
     }
 

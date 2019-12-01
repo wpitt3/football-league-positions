@@ -17,9 +17,7 @@ class LeaguePredicterTest extends Specification {
           result.size() == 6
           result[0].teamName == "NUFC"
           result[0].currentPosition == 1
-          result[0].highestImpossible == null
           result[0].highestPossible == 1
-          result[0].highestWithoutLargeSwing == null
     }
     
     void "Basic look up for team which cannot go lower"() {
@@ -33,23 +31,7 @@ class LeaguePredicterTest extends Specification {
         then:
           result.size() == 6
           result[5].teamName == "BFC"
-          result[5].lowestWithoutLargeSwing == null
           result[5].lowestPossible == 6
-          result[5].lowestImpossible == null
-    }
-    
-    void "Lookup which teams could catch without large goal swing"() {
-        given:
-          Table table = new Table()
-          table.updateTable(matches(), 2)
-        
-        when:
-          List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
-        
-        then:
-          result.size() == 6
-          result[0].teamName == "NUFC"
-          result[0].lowestWithoutLargeSwing == 2
     }
     
     void "Lookup which teams which cannot catch main team as they are playing each other"() {
@@ -64,7 +46,6 @@ class LeaguePredicterTest extends Specification {
           result.size() == 6
           result[0].teamName == "NUFC"
           result[0].lowestPossible == 3
-          result[0].lowestImpossible == 4
     }
     
     void "Lowest without large swing is only set is not equal to possible"() {
@@ -79,41 +60,7 @@ class LeaguePredicterTest extends Specification {
           result.size() == 6
           result[3].teamName == "SFC"
           result[3].lowestPossible == 5
-          result[3].lowestImpossible == 6
           result[4].lowestPossible == 6
-    }
-    
-    @Ignore
-    void "Two teams are drawing and behind a team with a better goal difference by 4"() {
-        given:
-          Table table = new Table()
-          table.updateTable(matches(), 2)
-    
-        when:
-          List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
-
-        then:
-          result.size() == 6
-          result[1].teamName == "CFC"
-          result[1].lowestWithoutLargeSwing == 3
-          result[1].lowestPossible == 5
-    }
-    
-    void "Lookup which teams could be caught without large goal swing"() {
-        given:
-          Table table = new Table()
-          table.updateTable(matches(), 2)
-        
-        when:
-          List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
-        
-        then:
-          result.size() == 6
-          result[4].teamName == "MCFC"
-          result[4].currentPosition == 5
-          result[4].highestImpossible == null
-          result[4].highestPossible == 2
-          result[4].highestWithoutLargeSwing == 3
     }
     
     void "Lookup which teams are uncatchable as they are playing each other"() {
@@ -128,11 +75,9 @@ class LeaguePredicterTest extends Specification {
           result.size() == 6
           result[2].teamName == "LFC"
           result[2].currentPosition == 3
-          result[2].highestImpossible == 1
           result[2].highestPossible == 2
           result[5].teamName == "BFC"
           result[5].currentPosition == 6
-          result[5].highestImpossible == 3
           result[5].highestPossible == 4
     }
     
@@ -159,11 +104,9 @@ class LeaguePredicterTest extends Specification {
           result[1].lowestPossible == 4
           result[2].teamName == "SFC"
           result[2].currentPosition == 3
-          result[2].highestWithoutLargeSwing == 2
           result[2].highestPossible == 1
           result[3].teamName == "BFC"
           result[3].currentPosition == 4
-          result[3].highestWithoutLargeSwing == 2
           result[3].highestPossible == 1
     }
     
