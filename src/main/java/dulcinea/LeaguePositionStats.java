@@ -57,7 +57,7 @@ public class LeaguePositionStats {
     @Override
     public String toString() {
         String result = "";
-        result += StringUtils.rightPad(teamName, 8);
+        result += StringUtils.rightPad(teamName, 35);
         result += intStatToString(highestPossible);
         result += intStatToString(currentPosition);
         result += intStatToString(lowestPossible);

@@ -100,7 +100,7 @@ class TableTest extends Specification {
           Table table = new Table()
           table.updateTable(matches)
           String result = table.printTable()
-        
+          println result
         then:
           result ==
               "Team      P   W   D   L  GF  GA  GD   P\n" +

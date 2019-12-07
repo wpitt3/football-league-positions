@@ -15,12 +15,12 @@ public class NearbyTeamsCalculator {
         }));
 
         int previousGamesRemaining = 0;
-        for (int i=0; i<50;i++) {
-            teams = sortTeamsOpponentsToBeCatching(teams);
+        for (int i=0; i<120;i++) {
+            teams = sortTeamsOpponents(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
             if (previousGamesRemaining == gamesRemaining) {
                 teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
-                        aBeatB(topTeam, topTeam.getOpponents().get(0))
+                    aBeatB(topTeam, topTeam.getOpponents().get(0))
                 );
             }
             previousGamesRemaining = gamesRemaining;
@@ -44,8 +44,8 @@ public class NearbyTeamsCalculator {
         }));
 
         int previousGamesRemaining = 0;
-        for (int i = 0; i < 50; i++) {
-            teams = sortTeamsOpponentsToBeCatching(teams);
+        for (int i = 0; i < 120; i++) {
+            teams = sortTeamsOpponents(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
             if (previousGamesRemaining == gamesRemaining) {
                 teams.stream().filter(team -> team.getGamesToPlay() > 0).findFirst().ifPresent( topTeam ->
@@ -95,8 +95,7 @@ public class NearbyTeamsCalculator {
                 aBeatB(team, opponent);
             } else if (team.getPointsOffEqual() == 1) {
                 aDrewWithB(team, opponent);
-            }
-            if (team.getGamesToPlay() == 1 && (team.getPointsOffEqual() > 3 || team.getPointsOffEqual() < 1)) {
+            } else if (team.getGamesToPlay() == 1 && (team.getPointsOffEqual() > 3 || team.getPointsOffEqual() < 1)) {
                 aBeatB(opponent, team);
             }
         }
@@ -118,7 +117,7 @@ public class NearbyTeamsCalculator {
         }).collect(Collectors.toList());
     }
 
-    private static List<Team> sortTeamsOpponentsToBeCatching(List<Team> teams) {
+    private static List<Team> sortTeamsOpponents(List<Team> teams) {
         // this is an estimate
         int pointRequired = teams.stream().map(Team::getPointsOffEqual).filter(x -> x > 0).reduce(0, (a, b) -> a + b);
         int pointsRemaining = teams.stream().map(Team::getGamesToPlay).reduce(0, (a, b) -> a + b) / 2 * 3;

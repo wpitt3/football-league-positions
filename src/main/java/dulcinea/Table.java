@@ -67,9 +67,15 @@ public class Table {
 
 
     public String printTable() {
-        String table = "Team      P   W   D   L  GF  GA  GD   P\n";
+        if(teams.isEmpty()) {
+            return "No Teams";
+        }
+
+        int maxTeamLength = teams.stream().map(team -> team.getName().length()).reduce(Integer::max).get() + 3;
+        String table = StringUtils.rightPad("Team", maxTeamLength) + "  P   W   D   L  GF  GA  GD   P\n";
+
         for (TeamStatus team : teams) {
-            table += StringUtils.rightPad(team.getName(), 8);
+            table += StringUtils.rightPad(team.getName(), maxTeamLength);
             table += padNumber(team.getPlayed());
             table += padNumber(team.getWon());
             table += padNumber(team.getDrawn());
