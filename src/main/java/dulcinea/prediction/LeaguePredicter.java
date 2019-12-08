@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 import dulcinea.match.Match;
 import dulcinea.match.MatchFilterer;
 import dulcinea.match.Table;
-import dulcinea.match.TeamStatus;
+import dulcinea.match.LeaguePostion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class LeaguePredicter {
         Map<String, ArrayList<String>> teamToOpponents = calculateTeamToOpponents(matches, matchesPlayed, matchesLookAhead);
 
         return table.getTeams().stream().map( team -> {
-            LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getPosition());
+            LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getIndex());
             for (int i = 1; i<=matchesLookAhead; i++) {
                 Integer maxPoints = pointsForAWin * i;
                 leaguePositionStats = updateLpsWithCatchableTeams(table, i, maxPoints, teamToOpponents, team, leaguePositionStats);
@@ -30,33 +30,33 @@ public class LeaguePredicter {
         }).collect(Collectors.toList());
     }
 
-    private static LeaguePositionStats updateLpsWithCatchingTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, TeamStatus team, LeaguePositionStats leaguePositionStats) {
-        List<TeamStatus> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getPosition(), team.getPoints() - maxPoints);
-        int lowestPossible = team.getPosition();
+    private static LeaguePositionStats updateLpsWithCatchingTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, LeaguePostion team, LeaguePositionStats leaguePositionStats) {
+        List<LeaguePostion> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getIndex(), team.getPoints() - maxPoints);
+        int lowestPossible = team.getIndex();
         if (teamsCatchingUp.size() != 0) {
             lowestPossible += teamsCatchingUp.size() - NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(team, teamsCatchingUp, teamToOpponents, matchesLookAhead);
         }
         return leaguePositionStats.withLowestPossible(lowestPossible);
     }
 
-    private static LeaguePositionStats updateLpsWithCatchableTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, TeamStatus team, LeaguePositionStats leaguePositionStats) {
-        List<TeamStatus> catchableTeams = findCatchableTeams(table, team.getPosition(), team.getPoints() + maxPoints);
-        int highestPossible = team.getPosition();
+    private static LeaguePositionStats updateLpsWithCatchableTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, LeaguePostion team, LeaguePositionStats leaguePositionStats) {
+        List<LeaguePostion> catchableTeams = findCatchableTeams(table, team.getIndex(), team.getPoints() + maxPoints);
+        int highestPossible = team.getIndex();
         if (catchableTeams.size() != 0) {
             highestPossible -= catchableTeams.size() - NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(team, catchableTeams, teamToOpponents, matchesLookAhead);
         }
         return leaguePositionStats.withHighestPossible(highestPossible);
     }
 
-    private static List<TeamStatus> findCatchableTeams(Table table, int currentPosition, int maxPossiblePoints) {
+    private static List<LeaguePostion> findCatchableTeams(Table table, int currentPosition, int maxPossiblePoints) {
         return table.getTeams().stream()
-            .filter(team -> team.getPosition() < currentPosition && team.getPoints() <= maxPossiblePoints)
+            .filter(team -> team.getIndex() < currentPosition && team.getPoints() <= maxPossiblePoints)
             .collect(Collectors.toList());
     }
 
-    private static List<TeamStatus> findTeamsWhichCouldCatchUp(Table table, int currentPosition, int minPointsOfCatchingTeam) {
+    private static List<LeaguePostion> findTeamsWhichCouldCatchUp(Table table, int currentPosition, int minPointsOfCatchingTeam) {
         return table.getTeams().stream()
-            .filter(team -> team.getPosition() > currentPosition && team.getPoints() >= minPointsOfCatchingTeam)
+            .filter(team -> team.getIndex() > currentPosition && team.getPoints() >= minPointsOfCatchingTeam)
             .collect(Collectors.toList());
     }
 

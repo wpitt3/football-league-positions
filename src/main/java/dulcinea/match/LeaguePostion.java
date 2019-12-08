@@ -1,17 +1,17 @@
 package dulcinea.match;
 
-public class TeamStatus {
+public class LeaguePostion {
     private String name;
-    private int position; // 1 indexed
+    private int index; // 1 indexed
     private int won;
     private int drawn;
     private int lost;
     private int goalsFor;
     private int goalsAgainst;
 
-    public TeamStatus(String name) {
+    public LeaguePostion(String name) {
         this.name = name;
-        this.position = -1;
+        this.index = -1;
         this.won = 0;
         this.drawn = 0;
         this.lost = 0;
@@ -55,12 +55,12 @@ public class TeamStatus {
         return won*3+drawn;
     }
 
-    public int getPosition() {
-        return position;
+    public int getIndex() {
+        return index;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public void addMatch(int teamScore, int opponentScore) {

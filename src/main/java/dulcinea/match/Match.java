@@ -1,5 +1,8 @@
 package dulcinea.match;
 
+/**
+ * A football match between two teams, may or may not have been concluded
+ */
 public class Match {
 
     private String homeTeam;
@@ -7,12 +10,12 @@ public class Match {
     private Integer homeTeamScore;
     private Integer awayTeamScore;
 
-    public Match(String homeTeam, String awayTeam) {
+    Match(String homeTeam, String awayTeam) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
     }
 
-    public Match(String homeTeam, String awayTeam, Integer homeTeamScore, Integer awayTeamScore) {
+    Match(String homeTeam, String awayTeam, Integer homeTeamScore, Integer awayTeamScore) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.homeTeamScore = homeTeamScore;

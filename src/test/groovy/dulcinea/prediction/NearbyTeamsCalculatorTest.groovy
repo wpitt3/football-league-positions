@@ -2,8 +2,7 @@ package dulcinea.prediction
 
 import dulcinea.match.Match
 import dulcinea.match.Table
-import dulcinea.match.TeamStatus
-import dulcinea.prediction.NearbyTeamsCalculator
+import dulcinea.match.LeaguePostion
 import spock.lang.Specification
 
 class NearbyTeamsCalculatorTest extends Specification {
@@ -98,7 +97,7 @@ class NearbyTeamsCalculatorTest extends Specification {
         given:
           Table table = basicTable(5,3,3)
         
-          List<TeamStatus> teamsPlayingEachOther = [table.teams[0], table.teams[1], table.teams[2]]
+          List<LeaguePostion> teamsPlayingEachOther = [table.teams[0], table.teams[1], table.teams[2]]
           Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_A], (TEAM_A): [TEAM_B, TEAM_C], (TEAM_C): [TEAM_B, TEAM_A]]
         
         when:
@@ -113,7 +112,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(6,6,6,0)
           table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
 
-          List<TeamStatus> teamsPlayingEachOther = [ table.teams[0], table.teams[1], table.teams[2], table.teams[3]]
+          List<LeaguePostion> teamsPlayingEachOther = [table.teams[0], table.teams[1], table.teams[2], table.teams[3]]
           Map<String, ArrayList<String>> teamToOpponents =
                   [
                     (TEAM_A): [TEAM_B, TEAM_B, TEAM_D],
@@ -132,8 +131,8 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "Difficult example"() {
         given:
           Map teamToOpponents = ["Liverpool FC":["AFC Bournemouth", "Watford FC", "West Ham United FC"], "Aston Villa FC":["Leicester City FC", "Sheffield United FC", "Southampton FC"], "Tottenham Hotspur FC":["Burnley FC", "Wolverhampton Wanderers FC", "Chelsea FC"], "Wolverhampton Wanderers FC":["Brighton & Hove Albion FC", "Tottenham Hotspur FC", "Norwich City FC"], "Manchester City FC":["Manchester United FC", "Arsenal FC", "Leicester City FC"], "Southampton FC":["Newcastle United FC", "West Ham United FC", "Aston Villa FC"], "West Ham United FC":["Arsenal FC", "Southampton FC", "Liverpool FC"], "Chelsea FC":["Everton FC", "AFC Bournemouth", "Tottenham Hotspur FC"], "Manchester United FC":["Manchester City FC", "Everton FC", "Watford FC"], "Leicester City FC":["Aston Villa FC", "Norwich City FC", "Manchester City FC"], "AFC Bournemouth":["Liverpool FC", "Chelsea FC", "Burnley FC"], "Burnley FC":["Tottenham Hotspur FC", "Newcastle United FC", "AFC Bournemouth"], "Sheffield United FC":["Norwich City FC", "Aston Villa FC", "Brighton & Hove Albion FC"], "Norwich City FC":["Sheffield United FC", "Leicester City FC", "Wolverhampton Wanderers FC"], "Everton FC":["Chelsea FC", "Manchester United FC", "Arsenal FC"], "Watford FC":["Crystal Palace FC", "Liverpool FC", "Manchester United FC"], "Crystal Palace FC":["Watford FC", "Brighton & Hove Albion FC", "Newcastle United FC"], "Arsenal FC":["West Ham United FC", "Manchester City FC", "Everton FC"], "Newcastle United FC":["Southampton FC", "Burnley FC", "Crystal Palace FC"], "Brighton & Hove Albion FC":["Wolverhampton Wanderers FC", "Crystal Palace FC", "Sheffield United FC"]]
-          List<TeamStatus> teamsPlayingEachOther = ["Wolverhampton Wanderers FC": 23,"Manchester United FC": 21,"Crystal Palace FC": 21,"Tottenham Hotspur FC": 20,"Sheffield United FC": 19,"Arsenal FC": 19,"Newcastle United FC": 19,"Burnley FC": 18,"Brighton & Hove Albion FC": 18,"AFC Bournemouth": 16,"West Ham United FC": 16,"Aston Villa FC": 15].collect{k, v -> TeamStatus team = new TeamStatus(k); team.drawn = v; return team}
-          TeamStatus mainTeam = new TeamStatus("Southampton FC")
+          List<LeaguePostion> teamsPlayingEachOther = ["Wolverhampton Wanderers FC": 23, "Manchester United FC": 21, "Crystal Palace FC": 21, "Tottenham Hotspur FC": 20, "Sheffield United FC": 19, "Arsenal FC": 19, "Newcastle United FC": 19, "Burnley FC": 18, "Brighton & Hove Albion FC": 18, "AFC Bournemouth": 16, "West Ham United FC": 16, "Aston Villa FC": 15].collect{ k, v -> LeaguePostion team = new LeaguePostion(k); team.drawn = v; return team}
+          LeaguePostion mainTeam = new LeaguePostion("Southampton FC")
           mainTeam.drawn = 15
           
         
@@ -229,7 +228,7 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "3 teams 3 games 1 team 6 off, 2 teams 4 off"() {
         given:
           Table table = basicTable(6,2,2)
-          List<TeamStatus> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3]]
+          List<LeaguePostion> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3]]
           Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_D], (TEAM_D): [TEAM_B, TEAM_C], (TEAM_C): [TEAM_B, TEAM_D]]
     
         when:
@@ -244,7 +243,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(9,6,4,1)
           table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
         
-          List<TeamStatus> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3], table.teams[4]]
+          List<LeaguePostion> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3], table.teams[4]]
           Map<String, ArrayList<String>> teamToOpponents =
                   [(TEAM_B): [TEAM_E, TEAM_E, TEAM_C],
                     (TEAM_C): [TEAM_B, TEAM_D, TEAM_D],
@@ -260,7 +259,7 @@ class NearbyTeamsCalculatorTest extends Specification {
     
     private static Table basicTable(int...teamPoints) {
         Table table = new Table()
-        table.updateTable([new Match(TEAM_A, TEAM_B, 0, 0), new Match(TEAM_C, TEAM_D, 0, 0)], 1)
+        table.createTable([new Match(TEAM_A, TEAM_B, 0, 0), new Match(TEAM_C, TEAM_D, 0, 0)], 1)
         for(int i=0;i<teamPoints.length;i++) {
             table.teams[i].drawn += teamPoints[i]
         }

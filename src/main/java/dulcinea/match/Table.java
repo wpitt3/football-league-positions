@@ -1,5 +1,6 @@
 package dulcinea.match;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -7,32 +8,34 @@ import java.util.stream.Collectors;
 
 public class Table {
 
-    private List<TeamStatus> teams;
+    private List<LeaguePostion> teams;
 
-    public Table() {
+    private Table() {
         teams = new ArrayList<>();
     }
 
     /**
      * Construct table for all matches
      */
-    public void updateTable(List<Match> matches) {
-        addMatchesToTable(MatchFilterer.filterMatchesByPlayed(matches));
+    public static Table createTable(List<Match> matches) {
+        Table table = new Table();
+        table.addMatchesToTable(MatchFilterer.filterMatchesByPlayed(matches));
+        return table;
     }
 
     /**
      * Construct table for matches up to week x
      */
-    public void updateTable(List<Match> matches, int noOfMatches) {
+    public static Table createTable(List<Match> matches, int noOfMatches) {
         List<Match> matchesUpToWeek = MatchFilterer.findMatchesUntilWeekX(
-            MatchFilterer.filterMatchesByPlayed(matches), noOfMatches
+            MatchFilterer.filterMatchesByPlayed(matches),  noOfMatches
         );
 
-        addMatchesToTable(matchesUpToWeek);
+        return createTable(matchesUpToWeek);
     }
 
-    public List<TeamStatus> getTeams() {
-        return teams;
+    public List<LeaguePostion> getTeams() {
+        return Lists.newArrayList(teams);
     }
 
     private void addMatchesToTable(List<Match> matches) {
@@ -43,9 +46,9 @@ public class Table {
         updateOrder();
     }
 
-    private TeamStatus getTeam(String name) {
+    private LeaguePostion getTeam(String name) {
         return teams.stream().filter(team -> team.getName().equals(name)).findFirst().orElseGet(() -> {
-            TeamStatus team = new TeamStatus(name);
+            LeaguePostion team = new LeaguePostion(name);
             teams.add(team);
             return team;
         });
@@ -53,18 +56,17 @@ public class Table {
 
     private void updateOrder() {
         teams = teams.stream().sorted(
-            Comparator.comparing(TeamStatus::getPoints)
-                .thenComparing(TeamStatus::getGoalDifference)
-                .thenComparing(TeamStatus::getGoalsFor)
+            Comparator.comparing(LeaguePostion::getPoints)
+                .thenComparing(LeaguePostion::getGoalDifference)
+                .thenComparing(LeaguePostion::getGoalsFor)
                 .reversed()
         ).collect(Collectors.toList());
 
         int index = 1;
-        for(TeamStatus team: teams) {
-            team.setPosition(index++);
+        for(LeaguePostion team: teams) {
+            team.setIndex(index++);
         }
     }
-
 
     public String printTable() {
         if(teams.isEmpty()) {
@@ -74,7 +76,7 @@ public class Table {
         int maxTeamLength = teams.stream().map(team -> team.getName().length()).reduce(Integer::max).get() + 3;
         String table = StringUtils.rightPad("Team", maxTeamLength) + "  P   W   D   L  GF  GA  GD   P\n";
 
-        for (TeamStatus team : teams) {
+        for (LeaguePostion team : teams) {
             table += StringUtils.rightPad(team.getName(), maxTeamLength);
             table += padNumber(team.getPlayed());
             table += padNumber(team.getWon());

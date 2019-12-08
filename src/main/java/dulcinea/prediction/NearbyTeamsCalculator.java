@@ -1,6 +1,6 @@
 package dulcinea.prediction;
 
-import dulcinea.match.TeamStatus;
+import dulcinea.match.LeaguePostion;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,7 +10,7 @@ public class NearbyTeamsCalculator {
 
     private boolean debug = true;
 
-    public static int teamsWhichAreNotCatchablebyMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+    public static int teamsWhichAreNotCatchablebyMainTeam(LeaguePostion mainTeam, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints() + 3 * matchesLookAhead;
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
 
@@ -42,7 +42,7 @@ public class NearbyTeamsCalculator {
         return (int)teams.stream().filter(team -> team.getPointsOffEqual() < 0).count();
     }
 
-    public static int teamsWhichCannotCatchMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+    public static int teamsWhichCannotCatchMainTeam(LeaguePostion mainTeam, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints();
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
 
@@ -110,9 +110,9 @@ public class NearbyTeamsCalculator {
         }
     }
 
-    private static List<Team> calcTeams(int targetPoints, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
-        Map<String, Team> nameToTeam = teamsWithinRange.stream().map(teamStatus ->
-            new Team(teamStatus.getName(), targetPoints - teamStatus.getPoints())
+    private static List<Team> calcTeams(int targetPoints, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+        Map<String, Team> nameToTeam = teamsWithinRange.stream().map(leaguePostion ->
+            new Team(leaguePostion.getName(), targetPoints - leaguePostion.getPoints())
         ).collect(Collectors.toMap(Team::getName, Function.identity()));
 
         return nameToTeam.values().stream().map(team -> {

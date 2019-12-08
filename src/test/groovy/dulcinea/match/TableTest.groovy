@@ -11,8 +11,7 @@ class TableTest extends Specification {
           ]
         
         when:
-          Table table = new Table()
-          table.updateTable(matches)
+          Table table = Table.createTable(matches)
         
         then:
           table.teams.size() == 0
@@ -26,8 +25,7 @@ class TableTest extends Specification {
           ]
         
         when:
-          Table table = new Table()
-          table.updateTable(matches)
+          Table table = Table.createTable(matches)
         
         then:
           table.teams.size() == 4
@@ -51,8 +49,7 @@ class TableTest extends Specification {
           ]
         
         when:
-          Table table = new Table()
-          table.updateTable(matches)
+          Table table = Table.createTable(matches)
     
         then:
           table.teams.size() == 6
@@ -80,8 +77,7 @@ class TableTest extends Specification {
           ]
         
         when:
-          Table table = new Table()
-          table.updateTable(matches, 1)
+          Table table = Table.createTable(matches, 1)
           
         then:
           table.teams.size() == 4
@@ -96,10 +92,9 @@ class TableTest extends Specification {
           ]
         
         when:
-          Table table = new Table()
-          table.updateTable(matches)
+          Table table = Table.createTable(matches)
           String result = table.printTable()
-          println result
+        
         then:
           result ==
               "Team      P   W   D   L  GF  GA  GD   P\n" +
@@ -108,4 +103,14 @@ class TableTest extends Specification {
               "WWWFC      1   0   1   0   2   2   0   1\n" +
               "NCFC       1   0   0   1   1   4  -3   0\n"
     }
+    
+    void "Printing empty table does not crash"() {
+        when:
+          Table table = Table.createTable(new ArrayList<Match>())
+          String result = table.printTable()
+    
+        then:
+          result == "No Teams"
+    }
+    
 }

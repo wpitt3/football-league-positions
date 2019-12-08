@@ -32,8 +32,7 @@ class LeaguePositionCalculator {
 
         List<Match> allMatches = FootballMatchesParser.parse(readFile(args[0]));
 
-        Table table = new Table();
-        table.updateTable(allMatches, matchesPlayed);
+        Table table = Table.createTable(allMatches, matchesPlayed);
 
         System.out.println(table.printTable());
 

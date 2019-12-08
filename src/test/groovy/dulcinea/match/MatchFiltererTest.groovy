@@ -1,16 +1,12 @@
 package dulcinea.match
 
-import dulcinea.match.Match
-import dulcinea.match.MatchFilterer
 import spock.lang.Specification
 
 class MatchFiltererTest extends Specification {
     
     void "Filter unplayed matches"() {
         given:
-          List matches = [
-                  new Match("EFC", "WFC", null, null),
-          ]
+          List matches = [new Match("EFC", "WFC", null, null),]
         
         when:
           List<Match> result = MatchFilterer.filterMatchesByPlayed(matches)
@@ -55,6 +51,17 @@ class MatchFiltererTest extends Specification {
           result[0].awayTeam == "NCFC"
           result[1].homeTeam == "NUFC"
           result[1].awayTeam == "LFC"
+    }
+    
+    void "If matches have unbalanced number of games for each team then throw exception"() {
+        given:
+          List<Match> matches = matches() + [new Match("NUFC", "LFC", 2, 1), new Match("SFC", "LFC", 2, 1)]
+        
+        when:
+          MatchFilterer.findMatchesUntilWeekX(matches, 3)
+        
+        then:
+          thrown RuntimeException
     }
     
     private List<Match> matches() {

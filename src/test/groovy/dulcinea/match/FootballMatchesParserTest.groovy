@@ -1,12 +1,8 @@
 package dulcinea.match
 
-import dulcinea.match.FootballMatchesParser
-import dulcinea.match.Match
 import spock.lang.Specification
 
 class FootballMatchesParserTest extends Specification {
-    
-    
     void "Parse matches"() {
         given:
           String matchJson = getClass().getResource('/matches.json').readLines().join()

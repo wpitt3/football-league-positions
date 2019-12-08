@@ -2,8 +2,6 @@ package dulcinea.prediction
 
 import dulcinea.match.Match
 import dulcinea.match.Table
-import dulcinea.prediction.LeaguePositionStats
-import dulcinea.prediction.LeaguePredicter
 import spock.lang.Specification
 
 class LeaguePredicterTest extends Specification {
@@ -11,7 +9,7 @@ class LeaguePredicterTest extends Specification {
     void "Basic lookup for team which cannot go higher"() {
         given:
           Table table = new Table()
-          table.updateTable(matches(), 2)
+          table.createTable(matches(), 2)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -26,7 +24,7 @@ class LeaguePredicterTest extends Specification {
     void "Basic look up for team which cannot go lower"() {
         given:
           Table table = new Table()
-          table.updateTable(matches(), 2)
+          table.createTable(matches(), 2)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -40,7 +38,7 @@ class LeaguePredicterTest extends Specification {
     void "Lookup which teams which cannot catch main team as they are playing each other"() {
         given:
           Table table = new Table()
-          table.updateTable(matches(), 2)
+          table.createTable(matches(), 2)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -54,7 +52,7 @@ class LeaguePredicterTest extends Specification {
     void "Lowest without large swing is only set is not equal to possible"() {
         given:
           Table table = new Table()
-          table.updateTable(matches(), 2)
+          table.createTable(matches(), 2)
     
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -69,7 +67,7 @@ class LeaguePredicterTest extends Specification {
     void "Lookup which teams are uncatchable as they are playing each other"() {
         given:
           Table table = new Table()
-          table.updateTable(matches(), 2)
+          table.createTable(matches(), 2)
     
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -94,7 +92,7 @@ class LeaguePredicterTest extends Specification {
           ]
         
           Table table = new Table()
-          table.updateTable(matches, 1)
+          table.createTable(matches, 1)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches, 1, 1)
