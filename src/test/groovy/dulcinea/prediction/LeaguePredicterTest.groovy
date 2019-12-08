@@ -1,6 +1,9 @@
-package dulcinea
+package dulcinea.prediction
 
-import spock.lang.Ignore
+import dulcinea.match.Match
+import dulcinea.match.Table
+import dulcinea.prediction.LeaguePositionStats
+import dulcinea.prediction.LeaguePredicter
 import spock.lang.Specification
 
 class LeaguePredicterTest extends Specification {

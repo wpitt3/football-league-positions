@@ -1,4 +1,4 @@
-package dulcinea;
+package dulcinea.match;
 
 public class TeamStatus {
     private String name;

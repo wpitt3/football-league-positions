@@ -1,6 +1,9 @@
-package dulcinea
+package dulcinea.prediction
 
-import spock.lang.Ignore
+import dulcinea.match.Match
+import dulcinea.match.Table
+import dulcinea.match.TeamStatus
+import dulcinea.prediction.NearbyTeamsCalculator
 import spock.lang.Specification
 
 class NearbyTeamsCalculatorTest extends Specification {

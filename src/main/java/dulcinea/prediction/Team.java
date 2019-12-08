@@ -1,8 +1,7 @@
-package dulcinea;
+package dulcinea.prediction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Team {
     private String name;

@@ -1,4 +1,4 @@
-package dulcinea;
+package dulcinea.match;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,7 +9,7 @@ public class Table {
 
     private List<TeamStatus> teams;
 
-    Table() {
+    public Table() {
         teams = new ArrayList<>();
     }
 

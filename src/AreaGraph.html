@@ -11,6 +11,11 @@
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'x');
         data.addColumn('number', 'values');
+        data.addColumn({id:'i9', type:'number', role:'interval'});
+        data.addColumn({id:'i8', type:'number', role:'interval'});
+        data.addColumn({id:'i7', type:'number', role:'interval'});
+        data.addColumn({id:'i6', type:'number', role:'interval'});
+        data.addColumn({id:'i5', type:'number', role:'interval'});
         data.addColumn({id:'i4', type:'number', role:'interval'});
         data.addColumn({id:'i2', type:'number', role:'interval'});
         data.addColumn({id:'i3', type:'number', role:'interval'});
@@ -21,29 +26,34 @@
         data.addColumn({id:'i2', type:'number', role:'interval'});
         data.addColumn({id:'i3', type:'number', role:'interval'});
         data.addColumn({id:'i4', type:'number', role:'interval'});
+        data.addColumn({id:'i5', type:'number', role:'interval'});
+        data.addColumn({id:'i6', type:'number', role:'interval'});
+        data.addColumn({id:'i7', type:'number', role:'interval'});
+        data.addColumn({id:'i8', type:'number', role:'interval'});
+        data.addColumn({id:'i9', type:'number', role:'interval'});
 
 
         data.addRows([
-       [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4],
-        [2, 2, 1, 1, 1, 2, 2, 3, 4, 4, 5, 7],
-        [3, 3, 1, 1, 2, 2, 2, 4, 4, 5, 8, 10],
-        [4, 4, 1, 2, 2, 2, 3, 4, 5, 8, 10, 14],
-        [5, 5, 2, 2, 3, 4, 5, 8, 12, 15, 17, 19],
-        [6, 6, 2, 3, 4, 5, 5, 12, 16, 17, 18, 19],
-        [7, 7, 3, 4, 4, 5, 5, 12, 16, 17, 18, 20],
-        [8, 8, 3, 4, 4, 5, 5, 13, 17, 18, 20, 20],
-        [9, 9, 4, 4, 5, 5, 6, 15, 17, 19, 20, 20],
-        [10, 10, 4, 4, 5, 5, 6, 15, 18, 19, 20, 20],
-        [11, 11, 5, 5, 5, 5, 6, 15, 18, 19, 20, 20],
-        [12, 12, 5, 5, 5, 5, 6, 17, 18, 19, 20, 20],
-        [13, 13, 5, 5, 5, 5, 6, 17, 18, 19, 20, 20],
-        [14, 14, 5, 5, 5, 6, 9, 18, 19, 20, 20, 20],
-        [15, 15, 5, 5, 6, 6, 9, 18, 19, 20, 20, 20],
-        [16, 16, 5, 6, 6, 6, 12, 18, 19, 20, 20, 20],
-        [17, 17, 5, 6, 7, 7, 12, 18, 19, 20, 20, 20],
-        [18, 18, 6, 6, 7, 10, 14, 19, 20, 20, 20, 20],
-        [19, 19, 8, 10, 10, 14, 18, 20, 20, 20, 20, 20],
-        [20, 20, 8, 12, 14, 18, 18, 20, 20, 20, 20, 20],
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 4, 5, 8, 10, 12],
+[2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 4, 4, 5, 7, 10, 12, 15, 17, 19],
+[3, 3, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 4, 4, 5, 8, 10, 13, 16, 18, 18, 19],
+[4, 4, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 4, 5, 8, 10, 14, 16, 18, 18, 19, 20],
+[5, 5, 1, 1, 1, 1, 2, 2, 2, 3, 4, 5, 8, 12, 15, 17, 19, 20, 19, 20, 20, 20],
+[6, 6, 1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 12, 16, 17, 18, 19, 20, 20, 20, 20, 20],
+[7, 7, 1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 12, 16, 17, 18, 20, 20, 20, 20, 20, 20],
+[8, 8, 1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 13, 17, 18, 20, 20, 20, 20, 20, 20, 20],
+[9, 9, 1, 1, 1, 2, 2, 3, 4, 5, 5, 6, 15, 17, 19, 20, 20, 20, 20, 20, 20, 20],
+[10, 10, 1, 1, 1, 2, 2, 3, 4, 5, 5, 6, 15, 18, 19, 20, 20, 20, 20, 20, 20, 20],
+[11, 11, 1, 1, 1, 2, 2, 3, 4, 5, 5, 6, 15, 18, 19, 20, 20, 20, 20, 20, 20, 20],
+[12, 12, 1, 1, 2, 2, 2, 3, 4, 5, 5, 6, 17, 18, 19, 20, 20, 20, 20, 20, 20, 20],
+[13, 13, 1, 1, 2, 2, 2, 3, 4, 5, 5, 6, 17, 18, 19, 20, 20, 20, 20, 20, 20, 20],
+[14, 14, 1, 1, 2, 2, 3, 4, 5, 5, 6, 9, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20],
+[15, 15, 1, 1, 2, 2, 3, 4, 5, 5, 6, 9, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20],
+[16, 16, 1, 2, 2, 2, 3, 4, 5, 5, 6, 12, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20],
+[17, 17, 1, 2, 2, 2, 3, 4, 5, 5, 6, 12, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20],
+[18, 18, 1, 2, 2, 2, 3, 4, 5, 6, 9, 14, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+[19, 19, 2, 2, 2, 3, 4, 5, 7, 9, 14, 18, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+[20, 20, 3, 3, 3, 5, 6, 7, 10, 14, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
            ]);
 
         // The intervals data as narrow lines (useful for showing raw source data)
@@ -55,11 +65,17 @@
             vAxis: { direction: -1, gridlines:{count:10}, baseline: 0},
            	hAxis: { gridlines:{count:10}, baseline: 0 },
             interval: {
-              'i4': { 'style':'area', 'fillOpacity':1.0, 'color':'#ed4132'},
-              'i3': { 'style':'area', 'fillOpacity':1.0, 'color':'#cc711d'},
-              'i2': { 'style':'area', 'fillOpacity':1.0, 'color':'#ed8c32'},
-              'i1': { 'style':'area', 'fillOpacity':1.0, 'color':'#f5e342'},
-              'i0': { 'style':'area', 'fillOpacity':1.0, 'color':'#48f542'},
+              'i10': { 'style':'area', 'fillOpacity':1.0, 'color':'#eb5a50'},
+              'i9': { 'style':'area', 'fillOpacity':1.0, 'color':'#eb6a50'},
+              'i8': { 'style':'area', 'fillOpacity':1.0, 'color':'#eb7f50'},
+              'i7': { 'style':'area', 'fillOpacity':1.0, 'color':'#eb9150'},
+              'i6': { 'style':'area', 'fillOpacity':1.0, 'color':'#eba350'},
+              'i5': { 'style':'area', 'fillOpacity':1.0, 'color':'#ebbf50'},
+              'i4': { 'style':'area', 'fillOpacity':1.0, 'color':'#ebd450'},
+              'i3': { 'style':'area', 'fillOpacity':1.0, 'color':'#deeb50'},
+              'i2': { 'style':'area', 'fillOpacity':1.0, 'color':'#dedb50'},
+              'i1': { 'style':'area', 'fillOpacity':1.0, 'color':'#c1eb50'},
+              'i0': { 'style':'area', 'fillOpacity':1.0, 'color':'#a4eb70'},
 
               },
             legend: 'none',

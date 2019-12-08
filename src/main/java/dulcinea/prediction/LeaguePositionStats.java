@@ -1,6 +1,4 @@
-package dulcinea;
-
-import org.apache.commons.lang3.StringUtils;
+package dulcinea.prediction;
 
 import java.util.ArrayList;
 import java.util.List;

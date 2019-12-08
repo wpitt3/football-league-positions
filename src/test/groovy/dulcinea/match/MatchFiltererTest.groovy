@@ -1,6 +1,7 @@
-package dulcinea
+package dulcinea.match
 
-
+import dulcinea.match.Match
+import dulcinea.match.MatchFilterer
 import spock.lang.Specification
 
 class MatchFiltererTest extends Specification {
@@ -8,7 +9,7 @@ class MatchFiltererTest extends Specification {
     void "Filter unplayed matches"() {
         given:
           List matches = [
-              new Match("EFC", "WFC", null, null),
+                  new Match("EFC", "WFC", null, null),
           ]
         
         when:

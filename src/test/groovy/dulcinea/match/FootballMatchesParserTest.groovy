@@ -1,5 +1,7 @@
-package dulcinea
+package dulcinea.match
 
+import dulcinea.match.FootballMatchesParser
+import dulcinea.match.Match
 import spock.lang.Specification
 
 class FootballMatchesParserTest extends Specification {

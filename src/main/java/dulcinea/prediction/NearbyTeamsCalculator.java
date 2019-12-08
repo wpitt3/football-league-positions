@@ -1,4 +1,6 @@
-package dulcinea;
+package dulcinea.prediction;
+
+import dulcinea.match.TeamStatus;
 
 import java.util.*;
 import java.util.function.Function;
@@ -12,11 +14,13 @@ public class NearbyTeamsCalculator {
         int targetPoints = mainTeam.getPoints() + 3 * matchesLookAhead;
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
 
+        // todo extract
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
             aBeatB(opponent, team);
         }));
 
         int previousGamesRemaining = 0;
+        // todo while
         for (int i=0; i<120;i++) {
             teams = sortTeamsOpponents(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();
@@ -42,11 +46,13 @@ public class NearbyTeamsCalculator {
         int targetPoints = mainTeam.getPoints();
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
 
+        // todo extract
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
             aBeatB(team, opponent);
         }));
 
         int previousGamesRemaining = 0;
+        // todo while
         for (int i = 0; i < 120; i++) {
             teams = sortTeamsOpponents(teams);
             int gamesRemaining = teams.stream().map(Team::getGamesToPlay).mapToInt(Integer::intValue).sum();

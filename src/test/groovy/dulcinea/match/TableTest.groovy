@@ -1,5 +1,4 @@
-package dulcinea
-
+package dulcinea.match
 
 import spock.lang.Specification
 
@@ -8,7 +7,7 @@ class TableTest extends Specification {
     void "Don't include non played matches in table"() {
         given:
           List matches = [
-              new Match("EFC", "WFC", null, null),
+                  new Match("EFC", "WFC", null, null),
           ]
         
         when:

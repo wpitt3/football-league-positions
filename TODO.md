@@ -1,9 +1,9 @@
 # Todo
-simplify Nearby team calc
 
-have the main endpoint show multiple weeks, eg table after one week, table after 2 weeks
+Document core conepts, matches, team and table.
 
-change endpoint so that a specific team can be selected for 'debug' this would allow a user to see which results would be required for the team to get to a certain point
+simplify nearby team calc and test at a lower level
+
 
 
 

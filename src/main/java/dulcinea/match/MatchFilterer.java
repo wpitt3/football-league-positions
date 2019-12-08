@@ -1,4 +1,4 @@
-package dulcinea;
+package dulcinea.match;
 
 import com.google.common.collect.Lists;
 

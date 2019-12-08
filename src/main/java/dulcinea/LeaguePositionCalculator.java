@@ -1,6 +1,12 @@
 package dulcinea;
 
 
+import dulcinea.match.FootballMatchesParser;
+import dulcinea.match.Match;
+import dulcinea.match.Table;
+import dulcinea.prediction.LeaguePositionStats;
+import dulcinea.prediction.LeaguePredicter;
+
 import java.io.*;
 import java.util.List;
 
