@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class NearbyTeamsCalculator {
 
+    private boolean debug = true;
+
     public static int teamsWhichAreNotCatchablebyMainTeam(TeamStatus mainTeam, List<TeamStatus> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints() + 3 * matchesLookAhead;
         List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
@@ -32,6 +34,7 @@ public class NearbyTeamsCalculator {
         if( teams.stream().anyMatch(team -> team.getGamesToPlay() > 0)) {
             throw new RuntimeException("Not fully resolved");
         }
+
         return (int)teams.stream().filter(team -> team.getPointsOffEqual() < 0).count();
     }
 
@@ -66,9 +69,9 @@ public class NearbyTeamsCalculator {
     }
 
     private static void resolveCatchableTeams(Team team) {
-        if (team.getGamesToPlay() * 3 < team.getPointsOffEqual()) {
+        if ((team.getGamesToPlay() * 3) <= team.getPointsOffEqual() || team.getPointsOffEqual() < 0) {
             for (Team opponent : team.getOpponents()) {
-                aBeatB(opponent, team);
+                aBeatB(team, opponent);
             }
         }
         if (team.getGamesToPlay() == 1) {

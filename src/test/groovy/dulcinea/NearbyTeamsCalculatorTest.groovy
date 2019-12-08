@@ -120,11 +120,27 @@ class NearbyTeamsCalculatorTest extends Specification {
                   ]
 
         when:
-          int result = NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(table.teams[4], teamsPlayingEachOther, teamToOpponents, 3)
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(table.teams[4], teamsPlayingEachOther, teamToOpponents, 3)
 
         then:
           result == 0
     }
+    
+    void "Difficult example"() {
+        given:
+          Map teamToOpponents = ["Liverpool FC":["AFC Bournemouth", "Watford FC", "West Ham United FC"], "Aston Villa FC":["Leicester City FC", "Sheffield United FC", "Southampton FC"], "Tottenham Hotspur FC":["Burnley FC", "Wolverhampton Wanderers FC", "Chelsea FC"], "Wolverhampton Wanderers FC":["Brighton & Hove Albion FC", "Tottenham Hotspur FC", "Norwich City FC"], "Manchester City FC":["Manchester United FC", "Arsenal FC", "Leicester City FC"], "Southampton FC":["Newcastle United FC", "West Ham United FC", "Aston Villa FC"], "West Ham United FC":["Arsenal FC", "Southampton FC", "Liverpool FC"], "Chelsea FC":["Everton FC", "AFC Bournemouth", "Tottenham Hotspur FC"], "Manchester United FC":["Manchester City FC", "Everton FC", "Watford FC"], "Leicester City FC":["Aston Villa FC", "Norwich City FC", "Manchester City FC"], "AFC Bournemouth":["Liverpool FC", "Chelsea FC", "Burnley FC"], "Burnley FC":["Tottenham Hotspur FC", "Newcastle United FC", "AFC Bournemouth"], "Sheffield United FC":["Norwich City FC", "Aston Villa FC", "Brighton & Hove Albion FC"], "Norwich City FC":["Sheffield United FC", "Leicester City FC", "Wolverhampton Wanderers FC"], "Everton FC":["Chelsea FC", "Manchester United FC", "Arsenal FC"], "Watford FC":["Crystal Palace FC", "Liverpool FC", "Manchester United FC"], "Crystal Palace FC":["Watford FC", "Brighton & Hove Albion FC", "Newcastle United FC"], "Arsenal FC":["West Ham United FC", "Manchester City FC", "Everton FC"], "Newcastle United FC":["Southampton FC", "Burnley FC", "Crystal Palace FC"], "Brighton & Hove Albion FC":["Wolverhampton Wanderers FC", "Crystal Palace FC", "Sheffield United FC"]]
+          List<TeamStatus> teamsPlayingEachOther = ["Wolverhampton Wanderers FC": 23,"Manchester United FC": 21,"Crystal Palace FC": 21,"Tottenham Hotspur FC": 20,"Sheffield United FC": 19,"Arsenal FC": 19,"Newcastle United FC": 19,"Burnley FC": 18,"Brighton & Hove Albion FC": 18,"AFC Bournemouth": 16,"West Ham United FC": 16,"Aston Villa FC": 15].collect{k, v -> TeamStatus team = new TeamStatus(k); team.drawn = v; return team}
+          TeamStatus mainTeam = new TeamStatus("Southampton FC")
+          mainTeam.drawn = 15
+          
+        
+        when:
+          int result = NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(mainTeam, teamsPlayingEachOther, teamToOpponents, 3)
+        
+        then:
+          result == 0
+    }
+    
     
     // TEAM being caught  |
     //                    v

@@ -22,6 +22,7 @@ class LeaguePositionCalculator {
 
         Integer matchesPlayed = Integer.parseInt(args[1]);
         Integer matchesLookAhead = Integer.parseInt(args[2]);
+//        String teamName = args[3];
 
         List<Match> allMatches = FootballMatchesParser.parse(readFile(args[0]));
 

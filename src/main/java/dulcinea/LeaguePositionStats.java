@@ -2,69 +2,65 @@ package dulcinea;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class LeaguePositionStats {
     private String teamName;
-    private Integer highestPossible;
+    private List<Integer> highestPossible;
+    private List<Integer> lowestPossible;
     private Integer currentPosition;
-    private Integer lowestPossible;
 
     public LeaguePositionStats(String teamName, Integer currentPosition) {
         this.teamName = teamName;
         this.currentPosition = currentPosition;
+        highestPossible = new ArrayList<>();
+        lowestPossible = new ArrayList<>();
     }
 
-    public LeaguePositionStats(String teamName, Integer highestPossible, Integer currentPosition, Integer lowestPossible) {
-        this.teamName = teamName;
-        this.highestPossible = highestPossible;
-        this.currentPosition = currentPosition;
-        this.lowestPossible = lowestPossible;
-    }
 
     public String getTeamName() {
         return teamName;
     }
 
-    public Integer getHighestPossible() {
-        return highestPossible;
-    }
-
-    public void setHighestPossible(Integer highestPossible) {
-        this.highestPossible = highestPossible;
+    public void addHighestPossible(Integer highestPossible) {
+        this.highestPossible.add(highestPossible);
     }
 
     public Integer getCurrentPosition() {
         return currentPosition;
     }
 
-    public Integer getLowestPossible() {
-        return lowestPossible;
-    }
-
-    public void setLowestPossible(Integer lowestPossible) {
-        this.lowestPossible = lowestPossible;
+    public void addLowestPossible(Integer lowestPossible) {
+        this.lowestPossible.add(lowestPossible);
     }
 
     public LeaguePositionStats withLowestPossible(Integer lowestPossible) {
-        this.lowestPossible = lowestPossible;
+        this.lowestPossible.add(lowestPossible);
         return this;
     }
 
     public LeaguePositionStats withHighestPossible(Integer highestPossible) {
-        this.highestPossible = highestPossible;
+        this.highestPossible.add(highestPossible);
         return this;
+    }
+
+    public List<Integer> getHighestPossible() {
+        return highestPossible;
+    }
+
+    public List<Integer> getLowestPossible() {
+        return lowestPossible;
     }
 
     @Override
     public String toString() {
         String result = "";
-        result += StringUtils.rightPad(teamName, 35);
-        result += intStatToString(highestPossible);
-        result += intStatToString(currentPosition);
-        result += intStatToString(lowestPossible);
+        result += teamName + ", ";
+        result += currentPosition + ", ";
+        result += highestPossible.stream().map( n -> n.toString() ).collect(Collectors.joining(", ")) + ", ";
+        result += lowestPossible.stream().map( n -> n.toString() ).collect(Collectors.joining(", "));
         return result;
-    }
-
-    private static String intStatToString(Integer stat){
-        return StringUtils.leftPad(stat != null ? stat.toString() : "", 3);
     }
 }

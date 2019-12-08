@@ -13,13 +13,15 @@ public class LeaguePredicter {
     private static final Integer pointsForAWin = 3;
 
     public static List<LeaguePositionStats> findPossibleLeaguePositions(Table table, List<Match> matches, Integer matchesPlayed, Integer matchesLookAhead) {
-        Integer maxPoints = pointsForAWin * matchesLookAhead;
         Map<String, ArrayList<String>> teamToOpponents = calculateTeamToOpponents(matches, matchesPlayed, matchesLookAhead);
 
         return table.getTeams().stream().map( team -> {
             LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getPosition());
-            leaguePositionStats = updateLpsWithCatchableTeams(table, matchesLookAhead, maxPoints, teamToOpponents, team, leaguePositionStats);
-            leaguePositionStats = updateLpsWithCatchingTeams(table, matchesLookAhead, maxPoints, teamToOpponents, team, leaguePositionStats);
+            for (int i = 1; i<=matchesLookAhead; i++) {
+                Integer maxPoints = pointsForAWin * i;
+                leaguePositionStats = updateLpsWithCatchableTeams(table, i, maxPoints, teamToOpponents, team, leaguePositionStats);
+                leaguePositionStats = updateLpsWithCatchingTeams(table, i, maxPoints, teamToOpponents, team, leaguePositionStats);
+            }
             return leaguePositionStats;
         }).collect(Collectors.toList());
     }
