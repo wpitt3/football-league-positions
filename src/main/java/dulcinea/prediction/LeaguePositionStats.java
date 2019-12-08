@@ -10,36 +10,27 @@ public class LeaguePositionStats {
     private List<Integer> lowestPossible;
     private Integer currentPosition;
 
-    public LeaguePositionStats(String teamName, Integer currentPosition) {
+    LeaguePositionStats(String teamName, Integer currentPosition) {
         this.teamName = teamName;
         this.currentPosition = currentPosition;
         highestPossible = new ArrayList<>();
         lowestPossible = new ArrayList<>();
     }
 
-
-    public String getTeamName() {
+    String getTeamName() {
         return teamName;
     }
 
-    public void addHighestPossible(Integer highestPossible) {
-        this.highestPossible.add(highestPossible);
-    }
-
-    public Integer getCurrentPosition() {
+    Integer getCurrentPosition() {
         return currentPosition;
     }
 
-    public void addLowestPossible(Integer lowestPossible) {
-        this.lowestPossible.add(lowestPossible);
-    }
-
-    public LeaguePositionStats withLowestPossible(Integer lowestPossible) {
+    LeaguePositionStats withLowestPossible(Integer lowestPossible) {
         this.lowestPossible.add(lowestPossible);
         return this;
     }
 
-    public LeaguePositionStats withHighestPossible(Integer highestPossible) {
+    LeaguePositionStats withHighestPossible(Integer highestPossible) {
         this.highestPossible.add(highestPossible);
         return this;
     }

@@ -8,38 +8,38 @@ public class Team {
     private List<Team> opponents;
     private int pointsOffEqual;
 
-    public Team(String name, int pointsOffEqual) {
+    Team(String name, int pointsOffEqual) {
         this.name = name;
         this.pointsOffEqual = pointsOffEqual;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public int getGamesToPlay() {
+    int getGamesToPlay() {
         return opponents.size();
     }
 
-    public void removeOpponent(Team opponent) {
+    void removeOpponent(Team opponent) {
         if ( opponents != null) {
             this.opponents.remove(opponent);
         }
     }
 
-    public int getPointsOffEqual() {
+    int getPointsOffEqual() {
         return pointsOffEqual;
     }
 
-    public void reducePointsOffEqual(int reduction) {
+    void reducePointsOffEqual(int reduction) {
         this.pointsOffEqual -= reduction;
     }
 
-    public List<Team> getOpponents() {
+    List<Team> getOpponents() {
         return new ArrayList<>(opponents);
     }
 
-    public void setOpponents(List<Team> opponents) {
+    void setOpponents(List<Team> opponents) {
         this.opponents = opponents;
     }
 }

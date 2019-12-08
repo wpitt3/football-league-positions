@@ -13,7 +13,6 @@ class NearbyTeamsCalculatorTest extends Specification {
     private static final String TEAM_E = "TeamE"
     private static final String TEAM_F = "TeamF"
     
-    
     void "Both teams are on the same points as TeamD and are catchable"() {
         given:
           Table table = basicTable(10)
@@ -110,7 +109,7 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "All four teams can be beated by fifth place, but a points must be perfectly distributed"() {
         given:
           Table table = basicTable(6,6,6,0)
-          table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
+          table.addMatchesToTable([new Match(TEAM_E, TEAM_F, 0, 0)])
 
           List<LeaguePostion> teamsPlayingEachOther = [table.teams[0], table.teams[1], table.teams[2], table.teams[3]]
           Map<String, ArrayList<String>> teamToOpponents =
@@ -241,7 +240,7 @@ class NearbyTeamsCalculatorTest extends Specification {
     void "All three teams can beat top of table, but a points must be perfectly distributed"() {
         given:
           Table table = basicTable(9,6,4,1)
-          table.updateTable([new Match(TEAM_E, TEAM_F, 0, 0)])
+          table.addMatchesToTable([new Match(TEAM_E, TEAM_F, 0, 0)])
         
           List<LeaguePostion> teamsPlayingEachOther = [table.teams[1], table.teams[2], table.teams[3], table.teams[4]]
           Map<String, ArrayList<String>> teamToOpponents =
@@ -258,8 +257,7 @@ class NearbyTeamsCalculatorTest extends Specification {
     }
     
     private static Table basicTable(int...teamPoints) {
-        Table table = new Table()
-        table.createTable([new Match(TEAM_A, TEAM_B, 0, 0), new Match(TEAM_C, TEAM_D, 0, 0)], 1)
+        Table table = Table.createTable([new Match(TEAM_A, TEAM_B, 0, 0), new Match(TEAM_C, TEAM_D, 0, 0)], 1)
         for(int i=0;i<teamPoints.length;i++) {
             table.teams[i].drawn += teamPoints[i]
         }

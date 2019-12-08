@@ -8,8 +8,7 @@ class LeaguePredicterTest extends Specification {
     
     void "Basic lookup for team which cannot go higher"() {
         given:
-          Table table = new Table()
-          table.createTable(matches(), 2)
+          Table table = Table.createTable(matches(), 2)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -23,8 +22,7 @@ class LeaguePredicterTest extends Specification {
     
     void "Basic look up for team which cannot go lower"() {
         given:
-          Table table = new Table()
-          table.createTable(matches(), 2)
+          Table table = Table.createTable(matches(), 2)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -37,8 +35,7 @@ class LeaguePredicterTest extends Specification {
     
     void "Lookup which teams which cannot catch main team as they are playing each other"() {
         given:
-          Table table = new Table()
-          table.createTable(matches(), 2)
+          Table table = Table.createTable(matches(), 2)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -51,8 +48,7 @@ class LeaguePredicterTest extends Specification {
     
     void "Lowest without large swing is only set is not equal to possible"() {
         given:
-          Table table = new Table()
-          table.createTable(matches(), 2)
+          Table table = Table.createTable(matches(), 2)
     
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -66,8 +62,7 @@ class LeaguePredicterTest extends Specification {
     
     void "Lookup which teams are uncatchable as they are playing each other"() {
         given:
-          Table table = new Table()
-          table.createTable(matches(), 2)
+          Table table = Table.createTable(matches(), 2)
     
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches(), 2, 1)
@@ -90,9 +85,8 @@ class LeaguePredicterTest extends Specification {
               new Match("LFC", "SFC"),
               new Match("NUFC", "BFC"),
           ]
-        
-          Table table = new Table()
-          table.createTable(matches, 1)
+  
+          Table table = Table.createTable(matches, 1)
         
         when:
           List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, matches, 1, 1)

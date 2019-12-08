@@ -17,7 +17,8 @@ public class LeaguePredicter {
     private static final Integer pointsForAWin = 3;
 
     public static List<LeaguePositionStats> findPossibleLeaguePositions(Table table, List<Match> matches, Integer matchesPlayed, Integer matchesLookAhead) {
-        Map<String, ArrayList<String>> teamToOpponents = calculateTeamToOpponents(matches, matchesPlayed, matchesLookAhead);
+        List<Match> futureMatches = MatchFilterer.findMatchesForWeekXToWeekY(matches, matchesPlayed, matchesLookAhead + matchesPlayed);
+        Map<String, ArrayList<String>> teamToOpponents = OpponentCalculator.calculateOpponents(futureMatches);
 
         return table.getTeams().stream().map( team -> {
             LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getIndex());
@@ -59,23 +60,4 @@ public class LeaguePredicter {
             .filter(team -> team.getIndex() > currentPosition && team.getPoints() >= minPointsOfCatchingTeam)
             .collect(Collectors.toList());
     }
-
-    //TODO: opponent finder class
-    private static Map<String, ArrayList<String>> calculateTeamToOpponents(List<Match> matches, Integer matchesPlayed, Integer matchesLookAhead) {
-        List<Match> futureMatches = MatchFilterer.findMatchesForWeekXToWeekY(matches, matchesPlayed, matchesLookAhead + matchesPlayed);
-        return futureMatches.stream()
-            .map(match -> Maps.newHashMap(ImmutableMap.of(
-                match.getHomeTeam(), Lists.newArrayList(match.getAwayTeam()),
-                match.getAwayTeam(), Lists.newArrayList(match.getHomeTeam()))))
-            .reduce((map1, map2) -> {
-                map2.forEach((key, subset) -> {
-                    ArrayList<String> x = map1.get(key) != null ? map1.get(key) : new ArrayList<>();
-                    x.addAll(subset);
-                    map1.put(key, x);
-                });
-                return map1;
-            }).get();
-    }
-
-
 }
