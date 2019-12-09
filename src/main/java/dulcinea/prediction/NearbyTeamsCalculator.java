@@ -8,11 +8,9 @@ import java.util.stream.Collectors;
 
 public class NearbyTeamsCalculator {
 
-    private boolean debug = true;
-
-    public static int teamsWhichAreNotCatchablebyMainTeam(LeaguePostion mainTeam, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+    public static List<Team> calcTeamsThatCanBeOvertaken(LeaguePostion mainTeam, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints() + 3 * matchesLookAhead;
-        List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
+        List<Team> teams = generateTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
 
         // todo extract
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
@@ -39,12 +37,12 @@ public class NearbyTeamsCalculator {
             throw new RuntimeException("Not fully resolved");
         }
 
-        return (int)teams.stream().filter(team -> team.getPointsOffEqual() < 0).count();
+        return teams.stream().filter(team -> team.getPointsOffEqual() >= 0).collect(Collectors.toList());
     }
 
-    public static int teamsWhichCannotCatchMainTeam(LeaguePostion mainTeam, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+    public static List<Team> calcCatchingTeams(LeaguePostion mainTeam, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         int targetPoints = mainTeam.getPoints();
-        List<Team> teams = calcTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
+        List<Team> teams = generateTeams(targetPoints, teamsWithinRange, teamToOpponents, matchesLookAhead);
 
         // todo extract
         teams.forEach(team -> team.getOpponents().stream().filter(Objects::isNull).forEach( opponent -> {
@@ -71,7 +69,7 @@ public class NearbyTeamsCalculator {
         if( teams.stream().anyMatch(team -> team.getGamesToPlay() > 0)) {
             throw new RuntimeException("Not fully resolved");
         }
-        return (int)teams.stream().filter(team -> team.getPointsOffEqual() > 0).count();
+        return teams.stream().filter(team -> team.getPointsOffEqual() <= 0).collect(Collectors.toList());
     }
 
     private static void resolveCatchableTeams(Team team) {
@@ -110,7 +108,7 @@ public class NearbyTeamsCalculator {
         }
     }
 
-    private static List<Team> calcTeams(int targetPoints, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
+    private static List<Team> generateTeams(int targetPoints, List<LeaguePostion> teamsWithinRange, Map<String, ArrayList<String>> teamToOpponents, Integer matchesLookAhead) {
         Map<String, Team> nameToTeam = teamsWithinRange.stream().map(leaguePostion ->
             new Team(leaguePostion.getName(), targetPoints - leaguePostion.getPoints())
         ).collect(Collectors.toMap(Team::getName, Function.identity()));

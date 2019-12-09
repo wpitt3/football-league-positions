@@ -1,8 +1,5 @@
 package dulcinea.prediction;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import dulcinea.match.Match;
 import dulcinea.match.MatchFilterer;
 import dulcinea.match.Table;
@@ -11,6 +8,7 @@ import dulcinea.match.LeaguePostion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class LeaguePredicter {
@@ -34,30 +32,26 @@ public class LeaguePredicter {
     private static LeaguePositionStats updateLpsWithCatchingTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, LeaguePostion team, LeaguePositionStats leaguePositionStats) {
         List<LeaguePostion> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getIndex(), team.getPoints() - maxPoints);
         int lowestPossible = team.getIndex();
-        if (teamsCatchingUp.size() != 0) {
-            lowestPossible += teamsCatchingUp.size() - NearbyTeamsCalculator.teamsWhichCannotCatchMainTeam(team, teamsCatchingUp, teamToOpponents, matchesLookAhead);
-        }
+        lowestPossible += NearbyTeamsCalculator.calcCatchingTeams(team, teamsCatchingUp, teamToOpponents, matchesLookAhead).size();
         return leaguePositionStats.withLowestPossible(lowestPossible);
     }
 
     private static LeaguePositionStats updateLpsWithCatchableTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, LeaguePostion team, LeaguePositionStats leaguePositionStats) {
         List<LeaguePostion> catchableTeams = findCatchableTeams(table, team.getIndex(), team.getPoints() + maxPoints);
         int highestPossible = team.getIndex();
-        if (catchableTeams.size() != 0) {
-            highestPossible -= catchableTeams.size() - NearbyTeamsCalculator.teamsWhichAreNotCatchablebyMainTeam(team, catchableTeams, teamToOpponents, matchesLookAhead);
-        }
+        highestPossible -= NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(team, catchableTeams, teamToOpponents, matchesLookAhead).size();
         return leaguePositionStats.withHighestPossible(highestPossible);
     }
 
     private static List<LeaguePostion> findCatchableTeams(Table table, int currentPosition, int maxPossiblePoints) {
-        return table.getTeams().stream()
-            .filter(team -> team.getIndex() < currentPosition && team.getPoints() <= maxPossiblePoints)
-            .collect(Collectors.toList());
+        return filterTeams(table, team -> team.getIndex() < currentPosition && team.getPoints() <= maxPossiblePoints);
     }
 
     private static List<LeaguePostion> findTeamsWhichCouldCatchUp(Table table, int currentPosition, int minPointsOfCatchingTeam) {
-        return table.getTeams().stream()
-            .filter(team -> team.getIndex() > currentPosition && team.getPoints() >= minPointsOfCatchingTeam)
-            .collect(Collectors.toList());
+        return filterTeams(table, team -> team.getIndex() > currentPosition && team.getPoints() >= minPointsOfCatchingTeam);
+    }
+
+    private static List<LeaguePostion> filterTeams(Table table, Predicate<LeaguePostion> filter) {
+        return table.getTeams().stream().filter(filter).collect(Collectors.toList());
     }
 }
