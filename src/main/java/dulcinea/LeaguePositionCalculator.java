@@ -9,6 +9,7 @@ import dulcinea.prediction.LeaguePredicter;
 
 import java.io.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class LeaguePositionCalculator {
 
@@ -30,16 +31,20 @@ class LeaguePositionCalculator {
         Integer matchesLookAhead = Integer.parseInt(args[2]);
 //        String teamName = args[3];
 
-        List<Match> allMatches = FootballMatchesParser.parse(readFile(args[0]));
+//        System.out.println(table.printTable());
 
-        Table table = Table.createTable(allMatches, matchesPlayed);
-
-        System.out.println(table.printTable());
-
-        List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, allMatches, matchesPlayed, matchesLookAhead);
-
-        for (LeaguePositionStats stats : result) {
-            System.out.println(stats);
+        for(int i = 1; i<3; i++) {
+            List<Match> allMatches = FootballMatchesParser.parse(readFile(args[0]));
+            matchesPlayed = i;
+            Table table = Table.createTable(allMatches, matchesPlayed);
+            List<LeaguePositionStats> result = LeaguePredicter.findPossibleLeaguePositions(table, allMatches, matchesPlayed, matchesLookAhead);
+//            System.out.println("{");
+//            System.out.println("teams: [\"" + result.stream().map(stats -> stats.getTeamName()).collect(Collectors.joining("\",\"")) + "\"],");
+//            System.out.println("teamData: [");
+//            for (LeaguePositionStats stats : result) {
+//                System.out.println(stats);
+//            }
+//            System.out.println("]},");
         }
     }
 

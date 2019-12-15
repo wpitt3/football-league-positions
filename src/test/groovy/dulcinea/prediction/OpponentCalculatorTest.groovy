@@ -13,7 +13,7 @@ class OpponentCalculatorTest extends Specification {
           List matches = [new Match(TEAM_A, TEAM_B)]
         
         when:
-          Map result = OpponentCalculator.calculateOpponents(matches)
+          Map result = OpponentCalculator.calculateMatchesOpponents(matches)
         
         then:
           result == [(TEAM_A):[TEAM_B], (TEAM_B): [TEAM_A]]
@@ -24,7 +24,7 @@ class OpponentCalculatorTest extends Specification {
           List matches = [new Match(TEAM_A, TEAM_B), new Match(TEAM_A, TEAM_B)]
         
         when:
-          Map result = OpponentCalculator.calculateOpponents(matches)
+          Map result = OpponentCalculator.calculateMatchesOpponents(matches)
         
         then:
           result == [(TEAM_A):[TEAM_B, TEAM_B], (TEAM_B): [TEAM_A, TEAM_A]]
@@ -35,7 +35,7 @@ class OpponentCalculatorTest extends Specification {
           List matches = [new Match(TEAM_A, TEAM_B), new Match(TEAM_A, TEAM_C)]
         
         when:
-          Map result = OpponentCalculator.calculateOpponents(matches)
+          Map result = OpponentCalculator.calculateMatchesOpponents(matches)
         
         then:
           result == [(TEAM_A):[TEAM_B, TEAM_C], (TEAM_B): [TEAM_A], (TEAM_C): [TEAM_A]]

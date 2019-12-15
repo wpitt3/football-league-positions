@@ -16,8 +16,10 @@ public class LeaguePredicter {
 
     public static List<LeaguePositionStats> findPossibleLeaguePositions(Table table, List<Match> matches, Integer matchesPlayed, Integer matchesLookAhead) {
         List<Match> futureMatches = MatchFilterer.findMatchesForWeekXToWeekY(matches, matchesPlayed, matchesLookAhead + matchesPlayed);
-        Map<String, ArrayList<String>> teamToOpponents = OpponentCalculator.calculateOpponents(futureMatches);
-
+        Map<String, ArrayList<String>> teamToOpponents = OpponentCalculator.calculateMatchesOpponents(futureMatches);
+        System.out.println(teamToOpponents.keySet().stream()
+                .map(team -> "\""+team+ "\":[\""+teamToOpponents.get(team).stream().collect(Collectors.joining("\",\""))+"\"]")
+                .collect(Collectors.joining(",")));
         return table.getTeams().stream().map( team -> {
             LeaguePositionStats leaguePositionStats = new LeaguePositionStats(team.getName(), team.getIndex());
             for (int i = 1; i<=matchesLookAhead; i++) {
@@ -32,6 +34,8 @@ public class LeaguePredicter {
     private static LeaguePositionStats updateLpsWithCatchingTeams(Table table, Integer matchesLookAhead, Integer maxPoints, Map<String, ArrayList<String>> teamToOpponents, LeaguePostion team, LeaguePositionStats leaguePositionStats) {
         List<LeaguePostion> teamsCatchingUp = findTeamsWhichCouldCatchUp(table, team.getIndex(), team.getPoints() - maxPoints);
         int lowestPossible = team.getIndex();
+        System.out.println(team.getName() + " "+ team.getPoints());
+        System.out.println(teamsCatchingUp.stream().map(opponent -> "\"" + opponent.getName() + "\":"+ opponent.getPoints()).collect(Collectors.joining(",")));
         lowestPossible += NearbyTeamsCalculator.calcCatchingTeams(team, teamsCatchingUp, teamToOpponents, matchesLookAhead).size();
         return leaguePositionStats.withLowestPossible(lowestPossible);
     }

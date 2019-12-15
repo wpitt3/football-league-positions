@@ -17,7 +17,7 @@ public class LeaguePositionStats {
         lowestPossible = new ArrayList<>();
     }
 
-    String getTeamName() {
+    public String getTeamName() {
         return teamName;
     }
 
@@ -45,11 +45,11 @@ public class LeaguePositionStats {
 
     @Override
     public String toString() {
-        String result = "";
-        result += teamName + ", ";
-        result += currentPosition + ", ";
-        result += highestPossible.stream().map( n -> n.toString() ).collect(Collectors.joining(", ")) + ", ";
+        String result = "[[";
+        result += highestPossible.stream().map( n -> n.toString() ).collect(Collectors.joining(", "));
+        result += "], [";
         result += lowestPossible.stream().map( n -> n.toString() ).collect(Collectors.joining(", "));
+        result += "]],";
         return result;
     }
 }

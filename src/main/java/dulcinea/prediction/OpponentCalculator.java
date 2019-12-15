@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class OpponentCalculator {
 
-    static Map<String, ArrayList<String>> calculateOpponents(List<Match> matches) {
+    static Map<String, ArrayList<String>> calculateMatchesOpponents(List<Match> matches) {
         return matches.stream()
                 .map(match -> Maps.newHashMap(ImmutableMap.of(
                         match.getHomeTeam(), Lists.newArrayList(match.getAwayTeam()),

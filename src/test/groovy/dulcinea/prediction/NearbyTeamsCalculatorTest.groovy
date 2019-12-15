@@ -20,7 +20,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           table.teams[2].goalsFor = 1
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 2
@@ -31,7 +31,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,2,2)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 2
@@ -42,7 +42,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,3)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 2
@@ -53,7 +53,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,3,2)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 1
@@ -64,7 +64,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,3,3)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result.size() == 2
@@ -75,7 +75,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,5,2)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result.size() == 2
@@ -86,7 +86,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(10,6,5)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result.size() == 1
@@ -100,7 +100,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_A], (TEAM_A): [TEAM_B, TEAM_C], (TEAM_C): [TEAM_B, TEAM_A]]
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], teamsPlayingEachOther, teamToOpponents, 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[3], teamsPlayingEachOther, teamToOpponents, 2)
         
         then:
           result.size() == 2
@@ -121,7 +121,7 @@ class NearbyTeamsCalculatorTest extends Specification {
                   ]
 
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[4], teamsPlayingEachOther, teamToOpponents, 3)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(table.teams[4], teamsPlayingEachOther, teamToOpponents, 3)
 
         then:
           result.size() == 4
@@ -135,7 +135,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           mainTeam.drawn = 15
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(mainTeam, teamsPlayingEachOther, teamToOpponents, 3)
+          List<Opponent> result = NearbyTeamsCalculator.calcTeamsThatCanBeOvertaken(mainTeam, teamsPlayingEachOther, teamToOpponents, 3)
         
         then:
           result.size() == 12
@@ -151,7 +151,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           table.teams[0].goalsFor = 2
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 2
@@ -162,7 +162,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(1)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 2
@@ -173,7 +173,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(3,3)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 2
@@ -184,7 +184,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(3,2)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(), 1)
         
         then:
           result.size() == 1
@@ -195,7 +195,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(3)
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
         
         then:
           result.size() == 2
@@ -206,7 +206,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(4,3)
     
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
     
         then:
           result.size() == 2
@@ -217,7 +217,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Table table = basicTable(7,1)
           
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], midTwoTeams(table), midTeamOpponents(2), 2)
     
         then:
           result.size() == 1
@@ -230,7 +230,7 @@ class NearbyTeamsCalculatorTest extends Specification {
           Map<String, ArrayList<String>> teamToOpponents = [(TEAM_B): [TEAM_C, TEAM_D], (TEAM_D): [TEAM_B, TEAM_C], (TEAM_C): [TEAM_B, TEAM_D]]
     
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], teamsPlayingEachOther, teamToOpponents, 2)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], teamsPlayingEachOther, teamToOpponents, 2)
     
         then:
           result.size() == 2
@@ -249,10 +249,24 @@ class NearbyTeamsCalculatorTest extends Specification {
                     (TEAM_E): [TEAM_B, TEAM_B, TEAM_A]]
         
         when:
-          List<Team> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], teamsPlayingEachOther, teamToOpponents, 3)
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(table.teams[0], teamsPlayingEachOther, teamToOpponents, 3)
         
         then:
           result.size() == 3
+    }
+    
+    void "Difficult catching"() {
+        given:
+          Map teamToOpponents = ["Aston Villa FC":["AFC Bournemouth","Everton FC","Crystal Palace FC"],"Liverpool FC":["Southampton FC","Arsenal FC","Burnley FC"],"Tottenham Hotspur FC":["Manchester City FC","Newcastle United FC","Arsenal FC"],"Wolverhampton Wanderers FC":["Manchester United FC","Burnley FC","Everton FC"],"Manchester City FC":["Tottenham Hotspur FC","AFC Bournemouth","Brighton & Hove Albion FC"],"Southampton FC":["Liverpool FC","Brighton & Hove Albion FC","Manchester United FC"],"West Ham United FC":["Brighton & Hove Albion FC","Watford FC","Norwich City FC"],"Chelsea FC":["Leicester City FC","Norwich City FC","Sheffield United FC"],"Leicester City FC":["Chelsea FC","Sheffield United FC","AFC Bournemouth"],"Manchester United FC":["Wolverhampton Wanderers FC","Crystal Palace FC","Southampton FC"],"AFC Bournemouth":["Aston Villa FC","Manchester City FC","Leicester City FC"],"Burnley FC":["Arsenal FC","Wolverhampton Wanderers FC","Liverpool FC"],"Sheffield United FC":["Crystal Palace FC","Leicester City FC","Chelsea FC"],"Norwich City FC":["Newcastle United FC","Chelsea FC","West Ham United FC"],"Everton FC":["Watford FC","Aston Villa FC","Wolverhampton Wanderers FC"],"Watford FC":["Everton FC","West Ham United FC","Newcastle United FC"],"Crystal Palace FC":["Sheffield United FC","Manchester United FC","Aston Villa FC"],"Arsenal FC":["Burnley FC","Liverpool FC","Tottenham Hotspur FC"],"Newcastle United FC":["Norwich City FC","Tottenham Hotspur FC","Watford FC"],"Brighton & Hove Albion FC":["West Ham United FC","Southampton FC","Manchester City FC"]]
+          List<LeaguePostion> teamsPlayingEachOther = ["AFC Bournemouth":1,"Sheffield United FC":1,"Crystal Palace FC":1,"Everton FC":1,"Leicester City FC":1,"Wolverhampton Wanderers FC":1,"Newcastle United FC":0,"Aston Villa FC":0,"Norwich City FC":0,"Southampton FC":0,"Watford FC":0,"Chelsea FC":0,"West Ham United FC":0].collect{ k, v -> LeaguePostion team = new LeaguePostion(k); team.drawn = v; return team}
+          LeaguePostion mainTeam = new LeaguePostion("Arsenal FC")
+          mainTeam.drawn = 3
+    
+        when:
+          List<Opponent> result = NearbyTeamsCalculator.calcCatchingTeams(mainTeam, teamsPlayingEachOther, teamToOpponents, 2)
+    
+        then:
+          result.size() == 12
     }
     
     private static Table basicTable(int...teamPoints) {
