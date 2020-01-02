@@ -1,47 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" type="text/css" href="./src/main/js/style.css">
     <script type="text/javascript" src="./src/main/js/graph.js"></script>
     <script type="text/javascript" src="./src/main/js/data.js"></script>
 </head>
-<body>
+<body style="background-color: #EFEFEF">
   <div id="wrapper" >
-    <div id="team_names" style="width: 200px; height: 1000px; float: left; display:block; margin-top: 157px">
-    </div>
-    <div id="chart_wrapper" style="width: 700px; height: 1000px; overflow: hidden; float: left">
-      <div id="chart_lines" style="width: 900px; height: 1000px; margin: 0 0 0 -160px"></div>
-    </div>
+
+      <div id="chart_wrapper">
+          <div id="Title">Premier League</div>
+          <div id="chart">
+          </div>
+          <div id="buttons_wrapper">
+              <button onclick="back()"><</button>
+              <button id="pause_button" onclick="pause()">Pause</button>
+              <button onclick="forward()">></button>
+          </div>
+      </div>
+
   </div>
-</body>
-<script type="text/javascript">
-      function drawTeamNames(teams) {
-          var teamNamesNode = document.getElementById("team_names");
-          while (teamNamesNode.firstChild) {
-            teamNamesNode.removeChild(teamNamesNode.firstChild);
-          }
-          for (let i = 0; i < teams.length; i++) {
-            var node = document.createElement("div");
-            node.style = "float: left; width: 100%; text-align: right; margin-bottom: 6.7px"
-            var teamNameNode = document.createTextNode(teams[i]);
-            node.appendChild(teamNameNode);
-            teamNamesNode.appendChild(node);
-          }
-      }
+  <script type="text/javascript">
       function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
       }
+      let index = 0;
+      let paused = false
       async function drawEverything(data) {
-          await sleep(2000);
-          for (let index = 0; index < data.length; index++) {
-              drawTeamNames(data[index].teams);
-              createGraph(data[index].teamData, colours);
-              await sleep(2000);
+          await sleep(500);
+          while(true) {
+              if (!paused) {
+                  setTitle();
+                  createGraph(data[index].teams, data[index].teamData);
+                  await sleep(1000);
+                  if (index < data.length-1) {
+                    index++
+                  }
+              }
+              await sleep(100);
           }
       }
 
-      drawEverything(data);
+      function pause() {
+        paused = !paused
+        setPauseName()
+      }
 
+      function back() {
+        paused = true;
+        setPauseName()
+        if (index > 0) {
+            index -= 1;
+            setTitle();
+            createGraph(data[index].teams, data[index].teamData);
+        }
+      }
+      function forward() {
+        paused = true;
+        setPauseName()
+        if (index < data.length-1) {
+            index += 1;
+            setTitle();
+            createGraph(data[index].teams, data[index].teamData);
+        }
+      }
+
+      function setPauseName() {
+        var pButton = document.getElementById("pause_button");
+        pButton.textContent = paused ? "Play" : "Pause"
+      }
+
+      function setTitle() {
+        var x = document.getElementById("Title");
+        x.textContent = "Premier League Week " + (index+1);
+      }
+
+
+
+      drawEverything(data);
   </script>
+  </div>
+</body>
 </html>
 

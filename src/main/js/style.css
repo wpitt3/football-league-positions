@@ -1,0 +1,76 @@
+#chart_wrapper{
+    margin: 30px;
+    padding: 20px;
+    width: 750px;
+    height: 620px;
+    background: #FFFFFF;
+    border-radius: 5px;
+}
+
+#Title {
+    width: 100%;
+    float: left;
+    display: block;
+    font-size: 30px;
+    padding: 8px 10px 15px;
+    color: #333333
+}
+
+#chart {
+  float: left;
+  display: block;
+  max-width: 1000px;
+  color: #333333
+}
+
+.team_name {
+    float: left;
+    display: block;
+    width: 120px;
+    overflow: hidden;
+    padding-right: 20px;
+    font-size: 14px;
+    border: 1px #CCCCCC;
+    border-style: dotted none none none;
+}
+.data_row {
+  float: left;
+  display: block;
+}
+.data_cell {
+  float: left;
+  display: block;
+  height: 25px;
+  width: 25px;
+  color: navy;
+  border: 1px #FAFAFF;
+  border-style: none none solid solid;
+  border-radius: 1px;
+}
+.data_cell_0 { background: #AAAAEE}
+.data_cell_1 { background: #a4eb70}
+.data_cell_2 { background: #c1eb50}
+.data_cell_3 { background: #deeb50}
+.data_cell_4 { background: #dedb50}
+.data_cell_5 { background: #ebd450}
+.data_cell_6 { background: #ebbf50}
+.data_cell_7 { background: #eba350}
+.data_cell_8 { background: #eb9150}
+.data_cell_9 { background: #eb7f50}
+.data_cell_10 { background: #eb6a50}
+.data_cell_11 { background: #000000}
+
+#buttons_wrapper {
+    width: 100%;
+    float: left;
+    display: block;
+    padding-left: 230px;
+    padding-top: 10px;
+}
+
+#buttons_wrapper button {
+    width: 50px;
+    height: 30px;
+    border-radius: 3px;
+}
+

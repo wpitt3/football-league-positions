@@ -3,12 +3,12 @@ package dulcinea.prediction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Opponent {
+public class Team {
     private String name;
-    private List<Opponent> opponents;
+    private List<Team> opponents;
     private int pointsOffEqual;
 
-    Opponent(String name, int pointsOffEqual) {
+    Team(String name, int pointsOffEqual) {
         this.name = name;
         this.pointsOffEqual = pointsOffEqual;
     }
@@ -21,7 +21,7 @@ public class Opponent {
         return opponents.size();
     }
 
-    void removeOpponent(Opponent opponent) {
+    void removeOpponent(Team opponent) {
         if ( opponents != null) {
             this.opponents.remove(opponent);
         }
@@ -35,11 +35,11 @@ public class Opponent {
         this.pointsOffEqual -= reduction;
     }
 
-    List<Opponent> getOpponents() {
+    List<Team> getOpponents() {
         return new ArrayList<>(opponents);
     }
 
-    void setOpponents(List<Opponent> opponents) {
+    void setOpponents(List<Team> opponents) {
         this.opponents = opponents;
     }
 }

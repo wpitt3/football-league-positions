@@ -1,7 +1,7 @@
 var colours = ["#a4eb70","#c1eb50","#deeb50","#dedb50","#ebd450","#ebbf50","#eba350","#eb9150","#eb7f50","#eb6a50"]
 data = [
 {
-teams: ["Manchester City FC","Manchester United FC","Liverpool FC","Burnley FC","Brighton & Hove Albion FC","Tottenham Hotspur FC","Arsenal FC","AFC Bournemouth","Sheffield United FC","Crystal Palace FC","Everton FC","Leicester City FC","Wolverhampton Wanderers FC","Newcastle United FC","Aston Villa FC","Norwich City FC","Southampton FC","Watford FC","Chelsea FC","West Ham United FC"],
+teams: ["Man City","Man United","Liverpool","Burnley","Brighton","Tottenham","Arsenal","Bournemouth","Sheffield Utd","Crystal Palace","Everton","Leicester City","Wolves","Newcastle","Aston Villa","Norwich City","Southampton","Watford","Chelsea","West Ham"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [15, 19, 20, 20, 20, 20, 20, 20, 20, 20]],
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [15, 19, 20, 20, 20, 20, 20, 20, 20, 20]],
@@ -25,7 +25,7 @@ teamData: [
 [[4, 1, 1, 1, 1, 1, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Arsenal FC","Manchester City FC","Manchester United FC","Brighton & Hove Albion FC","Tottenham Hotspur FC","AFC Bournemouth","Sheffield United FC","Everton FC","Burnley FC","Norwich City FC","Leicester City FC","Wolverhampton Wanderers FC","Crystal Palace FC","Chelsea FC","West Ham United FC","Aston Villa FC","Newcastle United FC","Southampton FC","Watford FC"],
+teams: ["Liverpool","Arsenal","Man City","Man United","Brighton","Tottenham","Bournemouth","Sheffield Utd","Everton","Burnley","Norwich City","Leicester City","Wolves","Crystal Palace","Chelsea","West Ham","Aston Villa","Newcastle","Southampton","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [10, 14, 17, 18, 19, 19, 20, 20, 20, 20]],
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [10, 14, 17, 18, 20, 20, 20, 20, 20, 20]],
@@ -49,7 +49,7 @@ teamData: [
 [[12, 2, 1, 1, 1, 1, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Arsenal FC","Leicester City FC","Manchester United FC","Burnley FC","Tottenham Hotspur FC","Brighton & Hove Albion FC","Sheffield United FC","Crystal Palace FC","AFC Bournemouth","Everton FC","West Ham United FC","Chelsea FC","Wolverhampton Wanderers FC","Aston Villa FC","Norwich City FC","Southampton FC","Newcastle United FC","Watford FC"],
+teams: ["Liverpool","Man City","Arsenal","Leicester City","Man United","Burnley","Tottenham","Brighton","Sheffield Utd","Crystal Palace","Bournemouth","Everton","West Ham","Chelsea","Wolves","Aston Villa","Norwich City","Southampton","Newcastle","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [3, 12, 16, 18, 19, 19, 19, 19, 19, 19]],
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [11, 16, 17, 19, 20, 20, 20, 20, 20, 20]],
@@ -73,7 +73,7 @@ teamData: [
 [[15, 6, 4, 2, 1, 1, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Leicester City FC","Crystal Palace FC","Arsenal FC","Everton FC","West Ham United FC","Manchester United FC","Tottenham Hotspur FC","Sheffield United FC","Chelsea FC","Burnley FC","Southampton FC","Newcastle United FC","AFC Bournemouth","Brighton & Hove Albion FC","Wolverhampton Wanderers FC","Aston Villa FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Man City","Leicester City","Crystal Palace","Arsenal","Everton","West Ham","Man United","Tottenham","Sheffield Utd","Chelsea","Burnley","Southampton","Newcastle","Bournemouth","Brighton","Wolves","Aston Villa","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [2, 7, 11, 15, 18, 19, 19, 20, 20, 20]],
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [7, 12, 16, 18, 20, 20, 20, 20, 20, 20]],
@@ -97,7 +97,7 @@ teamData: [
 [[13, 7, 3, 2, 1, 1, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Tottenham Hotspur FC","Manchester United FC","Leicester City FC","Chelsea FC","Arsenal FC","West Ham United FC","AFC Bournemouth","Southampton FC","Everton FC","Crystal Palace FC","Norwich City FC","Burnley FC","Sheffield United FC","Brighton & Hove Albion FC","Aston Villa FC","Newcastle United FC","Wolverhampton Wanderers FC","Watford FC"],
+teams: ["Liverpool","Man City","Tottenham","Man United","Leicester City","Chelsea","Arsenal","West Ham","Bournemouth","Southampton","Everton","Crystal Palace","Norwich City","Burnley","Sheffield Utd","Brighton","Aston Villa","Newcastle","Wolves","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 2, 9, 12, 16, 18, 19, 19, 20, 20]],
 [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1], [9, 15, 16, 18, 20, 20, 20, 20, 20, 20]],
@@ -121,7 +121,7 @@ teamData: [
 [[15, 7, 2, 2, 1, 1, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Leicester City FC","Arsenal FC","West Ham United FC","AFC Bournemouth","Tottenham Hotspur FC","Manchester United FC","Burnley FC","Sheffield United FC","Chelsea FC","Crystal Palace FC","Southampton FC","Everton FC","Brighton & Hove Albion FC","Norwich City FC","Newcastle United FC","Aston Villa FC","Wolverhampton Wanderers FC","Watford FC"],
+teams: ["Liverpool","Man City","Leicester City","Arsenal","West Ham","Bournemouth","Tottenham","Man United","Burnley","Sheffield Utd","Chelsea","Crystal Palace","Southampton","Everton","Brighton","Norwich City","Newcastle","Aston Villa","Wolves","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 2, 5, 10, 13, 16, 17, 18, 19, 20]],
 [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1], [5, 11, 16, 16, 18, 19, 19, 19, 19, 20]],
@@ -145,7 +145,7 @@ teamData: [
 [[17, 11, 5, 2, 2, 1, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Leicester City FC","Arsenal FC","West Ham United FC","Tottenham Hotspur FC","Chelsea FC","AFC Bournemouth","Crystal Palace FC","Manchester United FC","Burnley FC","Sheffield United FC","Wolverhampton Wanderers FC","Southampton FC","Everton FC","Brighton & Hove Albion FC","Norwich City FC","Aston Villa FC","Newcastle United FC","Watford FC"],
+teams: ["Liverpool","Man City","Leicester City","Arsenal","West Ham","Tottenham","Chelsea","Bournemouth","Crystal Palace","Man United","Burnley","Sheffield Utd","Wolves","Southampton","Everton","Brighton","Norwich City","Aston Villa","Newcastle","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 2, 5, 9, 11, 14, 17, 17, 18, 20]],
 [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1], [3, 7, 12, 16, 17, 18, 19, 19, 20, 20]],
@@ -169,7 +169,7 @@ teamData: [
 [[18, 12, 7, 5, 2, 2, 2, 2, 2, 2], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Arsenal FC","Leicester City FC","Chelsea FC","Crystal Palace FC","Burnley FC","West Ham United FC","Tottenham Hotspur FC","AFC Bournemouth","Wolverhampton Wanderers FC","Manchester United FC","Sheffield United FC","Brighton & Hove Albion FC","Aston Villa FC","Newcastle United FC","Southampton FC","Everton FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Man City","Arsenal","Leicester City","Chelsea","Crystal Palace","Burnley","West Ham","Tottenham","Bournemouth","Wolves","Man United","Sheffield Utd","Brighton","Aston Villa","Newcastle","Southampton","Everton","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 3, 6, 10, 12, 15, 17, 17, 19]],
 [[2, 2, 1, 1, 1, 1, 1, 1, 1, 1], [6, 11, 15, 17, 19, 19, 19, 20, 20, 20]],
@@ -193,7 +193,7 @@ teamData: [
 [[19, 13, 8, 6, 3, 2, 1, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Leicester City FC","Chelsea FC","Arsenal FC","Crystal Palace FC","Tottenham Hotspur FC","Burnley FC","Sheffield United FC","AFC Bournemouth","West Ham United FC","Aston Villa FC","Wolverhampton Wanderers FC","Manchester United FC","Everton FC","Brighton & Hove Albion FC","Southampton FC","Newcastle United FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Man City","Leicester City","Chelsea","Arsenal","Crystal Palace","Tottenham","Burnley","Sheffield Utd","Bournemouth","West Ham","Aston Villa","Wolves","Man United","Everton","Brighton","Southampton","Newcastle","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 2, 4, 5, 10, 12, 15, 18, 18, 18]],
 [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1], [4, 5, 11, 15, 17, 18, 19, 19, 20, 20]],
@@ -217,7 +217,7 @@ teamData: [
 [[19, 15, 8, 7, 4, 3, 2, 1, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Leicester City FC","Chelsea FC","Arsenal FC","Crystal Palace FC","Manchester United FC","Sheffield United FC","AFC Bournemouth","West Ham United FC","Tottenham Hotspur FC","Wolverhampton Wanderers FC","Burnley FC","Brighton & Hove Albion FC","Aston Villa FC","Everton FC","Newcastle United FC","Southampton FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Man City","Leicester City","Chelsea","Arsenal","Crystal Palace","Man United","Sheffield Utd","Bournemouth","West Ham","Tottenham","Wolves","Burnley","Brighton","Aston Villa","Everton","Newcastle","Southampton","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 2, 4, 5, 8, 11, 13, 16, 16, 17]],
 [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1], [4, 5, 9, 12, 16, 18, 17, 19, 20, 20]],
@@ -241,7 +241,7 @@ teamData: [
 [[18, 15, 11, 6, 5, 4, 3, 2, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Manchester City FC","Leicester City FC","Chelsea FC","Arsenal FC","Sheffield United FC","AFC Bournemouth","Brighton & Hove Albion FC","Crystal Palace FC","Manchester United FC","Tottenham Hotspur FC","Wolverhampton Wanderers FC","West Ham United FC","Burnley FC","Newcastle United FC","Aston Villa FC","Everton FC","Southampton FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Man City","Leicester City","Chelsea","Arsenal","Sheffield Utd","Bournemouth","Brighton","Crystal Palace","Man United","Tottenham","Wolves","West Ham","Burnley","Newcastle","Aston Villa","Everton","Southampton","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 2, 4, 4, 7, 9, 11, 13, 16, 18]],
 [[2, 1, 1, 1, 1, 1, 1, 1, 1, 1], [4, 4, 7, 10, 14, 15, 18, 18, 19, 20]],
@@ -265,7 +265,7 @@ teamData: [
 [[18, 16, 11, 8, 6, 5, 3, 2, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Leicester City FC","Chelsea FC","Manchester City FC","Sheffield United FC","Arsenal FC","Manchester United FC","Wolverhampton Wanderers FC","AFC Bournemouth","Burnley FC","Brighton & Hove Albion FC","Crystal Palace FC","Newcastle United FC","Tottenham Hotspur FC","Everton FC","West Ham United FC","Aston Villa FC","Watford FC","Southampton FC","Norwich City FC"],
+teams: ["Liverpool","Leicester City","Chelsea","Man City","Sheffield Utd","Arsenal","Man United","Wolves","Bournemouth","Burnley","Brighton","Crystal Palace","Newcastle","Tottenham","Everton","West Ham","Aston Villa","Watford","Southampton","Norwich City"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 3, 4, 4, 7, 9, 12, 14, 16]],
 [[2, 2, 1, 1, 1, 1, 1, 1, 1, 1], [4, 4, 6, 11, 14, 16, 19, 17, 19, 19]],
@@ -289,7 +289,7 @@ teamData: [
 [[18, 16, 9, 7, 5, 4, 2, 2, 1, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Leicester City FC","Manchester City FC","Chelsea FC","Wolverhampton Wanderers FC","Sheffield United FC","Burnley FC","Arsenal FC","Manchester United FC","Tottenham Hotspur FC","AFC Bournemouth","Brighton & Hove Albion FC","Crystal Palace FC","Newcastle United FC","Aston Villa FC","Everton FC","West Ham United FC","Norwich City FC","Southampton FC","Watford FC"],
+teams: ["Liverpool","Leicester City","Man City","Chelsea","Wolves","Sheffield Utd","Burnley","Arsenal","Man United","Tottenham","Bournemouth","Brighton","Crystal Palace","Newcastle","Aston Villa","Everton","West Ham","Norwich City","Southampton","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 3, 4, 4, 5, 7, 10, 12, 14]],
 [[2, 2, 1, 1, 1, 1, 1, 1, 1, 1], [4, 4, 4, 8, 11, 13, 17, 17, 19, 19]],
@@ -313,7 +313,7 @@ teamData: [
 [[18, 15, 10, 7, 6, 4, 3, 2, 2, 1], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Leicester City FC","Manchester City FC","Chelsea FC","Tottenham Hotspur FC","Wolverhampton Wanderers FC","Sheffield United FC","Arsenal FC","Manchester United FC","Burnley FC","Crystal Palace FC","AFC Bournemouth","West Ham United FC","Newcastle United FC","Aston Villa FC","Brighton & Hove Albion FC","Everton FC","Southampton FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Leicester City","Man City","Chelsea","Tottenham","Wolves","Sheffield Utd","Arsenal","Man United","Burnley","Crystal Palace","Bournemouth","West Ham","Newcastle","Aston Villa","Brighton","Everton","Southampton","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 2, 3, 4, 4, 6, 9, 11, 14]],
 [[2, 2, 1, 1, 1, 1, 1, 1, 1, 1], [3, 4, 4, 5, 10, 11, 13, 17, 16, 20]],
@@ -337,7 +337,7 @@ teamData: [
 [[19, 17, 12, 8, 6, 5, 3, 3, 3, 3], [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]],
 ]},
 {
-teams: ["Liverpool FC","Leicester City FC","Manchester City FC","Chelsea FC","Wolverhampton Wanderers FC","Manchester United FC","Crystal Palace FC","Tottenham Hotspur FC","Sheffield United FC","Arsenal FC","Newcastle United FC","Burnley FC","Brighton & Hove Albion FC","AFC Bournemouth","West Ham United FC","Aston Villa FC","Southampton FC","Everton FC","Norwich City FC","Watford FC"],
+teams: ["Liverpool","Leicester City","Man City","Chelsea","Wolves","Man United","Crystal Palace","Tottenham","Sheffield Utd","Arsenal","Newcastle","Burnley","Brighton","Bournemouth","West Ham","Aston Villa","Southampton","Everton","Norwich City","Watford"],
 teamData: [
 [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 2, 3, 4, 4, 5, 8, 10, 12]],
 [[2, 2, 1, 1, 1, 1, 1, 1, 1, 1], [3, 4, 4, 5, 7, 10, 12, 15, 17, 19]],

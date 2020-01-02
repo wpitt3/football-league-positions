@@ -1,52 +1,82 @@
 
-function createGraph(teamData, colours) { 
-	  google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+function createGraph(teamNames, teamData) {
 
+    if (document.getElementsByClassName("team_name").length === 0){
+        createRows(teamNames)
+    }
+    addNamesToRows(teamNames)
+    addDataToRows(teamData)
+}
 
-      function drawChart() {
-      	var weeks = teamData[0][0].length
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'x');
-        data.addColumn('number', 'values');
-		for (let step = weeks-1; step >= 0; step--) {
- 			data.addColumn({id:'i'+step, type:'number', role:'interval'});
+function createRows(teamsNames) {
+    var chart = document.getElementById("chart");
 
+    for (let i = 0; i < teamsNames.length; i++) {
+        var row = document.createElement("div");
+        row.classList.add("chart_row")
+        var teamName = document.createElement("div")
+        teamName.classList.add("team_name")
+        row.appendChild(teamName);
+        var dataRow = document.createElement("div")
+        dataRow.classList.add("data_row")
+        row.appendChild(dataRow);
+        chart.appendChild(row);
+    }
+}
+
+function addNamesToRows(teamsNames) {
+    var teamsNameNodes = document.getElementsByClassName("team_name");
+    for (let i = 0; i < teamsNameNodes.length; i++) {
+        teamsNameNodes[i].textContent = (i+1).toString().padStart(2, '0') + ". " + teamsNames[i]
+    }
+}
+
+function addDataToRows(teamData) {
+    var teamsDataNodes = document.getElementsByClassName("data_row");
+
+    for (let i = 0; i < teamData.length; i++) {
+        while (teamsDataNodes[i].firstChild) {
+            teamsDataNodes[i].removeChild(teamsDataNodes[i].firstChild);
         }
-        for (let step = 0; step < weeks; step++) {
- 			data.addColumn({id:'i'+step, type:'number', role:'interval'});
-        }
 
-        rows = []
- 		for (let step = 0; step < teamData.length; step++) {
-            let y = 50
-            for (let x = 0; x < y; x++) {
-    			rows[step*y + x] = ([step*y+x+1,step+1].concat(teamData[step][0].reverse())).concat(teamData[step][1])
-                teamData[step][0].reverse()
+        var teamWeeks = formatTeamData(i+1, teamData);
+        for (let j = 0; j < teamWeeks.length; j++) {
+            if(teamsDataNodes[i].children.length < teamData.length) {
+                var dataCell = document.createElement("div")
+                dataCell.classList.add("data_cell")
+                dataCell.classList.add("data_cell_"+teamWeeks[j])
+                teamsDataNodes[i].appendChild(dataCell);
             }
-        
- 		}
+        }
+    }
+}
 
-        data.addRows(rows);
+function formatTeamData(currentIndex, teamData) {
+    var upward = calculateWeekSize(currentIndex, teamData[currentIndex-1][0], 1)
+    var downward = calculateWeekSize(currentIndex, teamData[currentIndex-1][1], teamData.length)
+    var result = []
+    for (let i = 0; i < upward.length; i++) {
+        for (let j = 0; j < upward[i]; j++) {
+            result.push(i+1);
+        }
+    }
+    result = result.reverse()
+    result.push(0)
+    for (let i = 0; i < downward.length; i++) {
+            for (let j = 0; j < downward[i]; j++) {
+                result.push(i+1);
+            }
+        }
+    return result
+}
 
-        intervals = {}
-        for (let step = 0; step < weeks; step++) {
-			intervals['i'+step] = { 'style':'area', 'fillOpacity':1.0, 'color':colours[step]}
- 		}
-
-        var options_lines = {
-            title: 'Prem',
-            curveType: 'none',
-            lineWidth: 2,
-            height: 800,
-            orientation: 'vertical',
-            vAxis: { direction: -1, gridlines:{count:10}, baseline: 0},
-           	hAxis: { gridlines:{count:10}, baseline: 1 },
-            interval: intervals,
-            legend: 'none',
-        };
-
-        var chart_lines = new google.visualization.LineChart(document.getElementById('chart_lines'));
-        chart_lines.draw(data, options_lines);
-      }
+function calculateWeekSize(a, teamData, max) {
+    var result = [];
+    var currentIndex = a;
+    for (let i = 0; i < teamData.length; i++) {
+        result.push(Math.abs(currentIndex - teamData[i]))
+        currentIndex = teamData[i];
+    }
+    result.push(Math.abs(currentIndex - max))
+    return result
 }
